@@ -1,0 +1,25 @@
+{
+    "premiumResultId": "6295b8d4e61adc6ff8e043a2",
+    "referenceId": "AGOCZTCEKN4",
+    "insurerCode": "CARE",
+    "productCode": "hospicash",
+    "personalDetails": {
+        "title": "Mr",
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "sumit.jadiya@turtlemint.com",
+        "mobile": "6100080400",
+        "dob": "12/10/1992"
+    },
+    "registeredAddress": {
+        "city": "PUNE",
+        "pincode": "411045",
+        "address1": "xyz dd",
+        "address2": "abc",
+        "cityId": "PUNE_MAHARASHTRA",
+        "state": "Maharashtra"
+    },
+    "otherDetails":{
+        
+    }
+}
