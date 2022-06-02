@@ -1,10 +1,21 @@
 const axios = require("axios").default;
-const quoteData = require("./quote.json");
-const proposalData = require("./proposal.json");
-const paymentData = require("./payment.json");
 
-const profile = "local";
+const hospicashQuoteData = require("./hospicash/quote.json");
+const hospicashProposalData = require("./hospicash/proposal.json");
+const hospicashPaymentData = require("./hospicash/payment.json");
+
+const mobileQuoteData = require("./mobile/quote.json");
+const mobileProposalData = require("./mobile/proposal.json");
+const mobilePaymentData = require("./mobile/payment.json");
+
+// update hardcoded values
+const vertical = "mobile";
+const profile = "uat";
+
 const url = profile==="local" ? "http://localhost:9098" : "https://app.skyfall.turtle-feature.com";
+const quoteData = vertical === "hospicash" ? hospicashQuoteData : mobileQuoteData;
+const proposalData = vertical === "hospicash" ? hospicashProposalData : mobileProposalData;
+const paymentData = vertical === "hospicash" ? hospicashPaymentData : mobilePaymentData;
 
 function createQuote() {
     console.log("getting ready with quote")
@@ -14,7 +25,7 @@ function createQuote() {
             
         )
         .then((response) => {
-            console.log((response.data[0]));
+            console.log("referenceId = " , response.data[0].premiumResultList[0].referenceId, " quoteId = " ,response.data[0].premiumResultList[0].quoteId);
             getQuote(response.data[0].premiumResultList[0].referenceId, response.data[0].premiumResultList[0].quoteId);
         })
         .catch(function (error) {
@@ -25,10 +36,10 @@ function createQuote() {
 function getQuote(referenceId, quoteId) {
     axios
         .get(
-            `${url}/api/minterprise/quote/v0/premiums/result?productCode=hospicash&referenceId=${referenceId}&quoteId=${quoteId}`
+            `${url}/api/minterprise/quote/v0/premiums/result?productCode=${vertical}&referenceId=${referenceId}&quoteId=${quoteId}`
         )
         .then(function (response) {
-            console.log(response.data);
+            console.log("referenceId = " , response.data.referenceId, " Premium Result Id = " ,response.data._id);
             getProposal(response.data.referenceId, response.data._id);
         })
         .catch(function (error) {
@@ -71,7 +82,7 @@ function generateLink(referenceId, proposalId) {
             console.log("Payment Link -- > " + (response.data.paymentLink));
         })
         .catch(function (error) {
-            console.log(error);
+            console.log("error");
         });
 }
 

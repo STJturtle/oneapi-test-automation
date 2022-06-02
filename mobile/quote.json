@@ -1,0 +1,8 @@
+{
+    "businessType": "NEW",
+    "productCode": "mobile",
+    "planCode":"MOBILE_EW",
+    "riskInsured": {
+        "sumInsured":20000
+    }
+}
