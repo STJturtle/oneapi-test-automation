@@ -1,7 +1,12 @@
 {
-    "businessType": "NEW",
-    "productCode": "hospicash",
-    "riskInsured": {
-        "sumInsured": 1000
+    "data": {
+        "productCode": "hospicash",
+        "policyType": "BASIC",
+        "businessType": "NEW",
+        "premiumRequest": {
+            "riskInsured": {
+                "sumInsured": 1000
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 {
-    "productCode": "hospicash",
-    "insurerCode": "HDFC",
-    "proposalId": "proposalId",
-    "referenceId": "referenceId"
+    "data": {
+        "productCode": "hospicash",
+        "insurerCode": "CARE",
+        "proposalId": "62c58b609779b720a3a26ec0",
+        "referenceId": "AGPHKBO7Q4G"
+    }
 }

@@ -9,80 +9,79 @@ const mobileProposalData = require("./mobile/proposal.json");
 const mobilePaymentData = require("./mobile/payment.json");
 
 // update hardcoded values
-const vertical = "mobile";
-const profile = "uat";
+const vertical = "hospicash";
+const profile = "local";
 
 const url = profile==="local" ? "http://localhost:9098" : "https://app.skyfall.turtle-feature.com";
 const quoteData = vertical === "hospicash" ? hospicashQuoteData : mobileQuoteData;
 const proposalData = vertical === "hospicash" ? hospicashProposalData : mobileProposalData;
 const paymentData = vertical === "hospicash" ? hospicashPaymentData : mobilePaymentData;
 
-function createQuote() {
-    console.log("getting ready with quote")
-    axios
+async function createQuote() {
+    console.log("getting ready with quote for", vertical)
+     axios
         .post(
-            `${url}/api/minterprise/quote/v0/premiums/request`,quoteData
-            
+            `${url}/api/minterprise/v1/products/${vertical}/quotes`, quoteData
         )
-        .then((response) => {
-            console.log("referenceId = " , response.data[0].premiumResultList[0].referenceId, " quoteId = " ,response.data[0].premiumResultList[0].quoteId);
-            getQuote(response.data[0].premiumResultList[0].referenceId, response.data[0].premiumResultList[0].quoteId);
+        .then(async (response) => {
+            console.log("referenceId = " , response.data.data.referenceId, " quoteId = " ,response.data.data.quoteId, " Insurer Code = " ,response.data.data.fetchQuoteLinks[0].insurerCode);
+            await getQuote(response.data.data.referenceId, response.data.data.quoteId, response.data.data.fetchQuoteLinks[0].insurerCode);
         })
         .catch(function (error) {
             console.log(error);
         });
 }
 
-function getQuote(referenceId, quoteId) {
-    axios
+async function getQuote(referenceId, quoteId, insurerCode) {
+     axios
         .get(
-            `${url}/api/minterprise/quote/v0/premiums/result?productCode=${vertical}&referenceId=${referenceId}&quoteId=${quoteId}`
+            `${url}/api/minterprise/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`
         )
         .then(function (response) {
-            console.log("referenceId = " , response.data.referenceId, " Premium Result Id = " ,response.data._id);
-            getProposal(response.data.referenceId, response.data._id);
+            console.log("referenceId = " , response.data.data.referenceId, " Premium Result Id = " ,response.data.data.premiumResultId);
+            getProposal(response.data.data.referenceId, response.data.data.premiumResultId);
         })
         .catch(function (error) {
             console.log(error);
         });
 }
 
-function getProposal(referenceId, premiumResultId) {
+async function getProposal(referenceId, premiumResultId) {
     console.log("creating proposal");
 
-    proposalData.premiumResultId = premiumResultId;
-    proposalData.referenceId = referenceId;
+    proposalData.data.premiumResultId = premiumResultId;
+    proposalData.data.referenceId = referenceId;
 
     axios
         .post(
-            `${url}/api/minterprise/proposal/v0/proposal/request`,
+            `${url}/api/minterprise/v1/products/${vertical}/proposals`,
             proposalData
         )
         .then((response) => {
-            console.log("Proposal Id -- > " + (response.data[0].proposalResults[0].proposalId));
-            generateLink(referenceId, response.data[0].proposalResults[0].proposalId);
+            console.log("Proposal Id -- > " + (response.data.data.proposalId));
+            generateLink(referenceId, response.data.data.proposalId);
         })
         .catch(function (error) {
             console.log(error);
         });
 }
 
-function generateLink(referenceId, proposalId) {
+async function generateLink(referenceId, proposalId) {
 
-    paymentData.referenceId = referenceId;
-    paymentData.proposalId = proposalId;
+    paymentData.data.referenceId = referenceId;
+    paymentData.data.proposalId = proposalId;
 
     console.log("fetching payment link");
-    axios
+    await axios
         .post(
-            `${url}/api/minterprise/v0/payments/link`,
+            `${url}/api/minterprise/v1/products/${vertical}/payments/link`,
             paymentData
         )
         .then((response) => {
-            console.log("Payment Link -- > " + (response.data.paymentLink));
+            console.log("Payment Link -- > " + (response.data.data.paymentLink));
         })
         .catch(function (error) {
-            console.log("error");
+            console.log("error"+ error);
         });
 }
 
