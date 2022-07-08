@@ -1,12 +1,12 @@
 {
     "data": {
-        "premiumResultId": "62c57575401bac51213f075d",
-        "referenceId": "AGPHR6KTLVM",
-        "insurerCode": "HDFC",
-        "productCode": "mobile",
+        "premiumResultId": "629eed3f1f0a416d3238624d",
+        "referenceId": "AGOKR9G7ABK",
+        "insurerCode": "CARE",
+        "productCode": "vector-borne",
         "personalDetails": {
             "title": "Mr",
-            "firstName": "Rohan",
+            "firstName": "John",
             "lastName": "Doe",
             "email": "sumit.jadiya@turtlemint.com",
             "mobile": "6100000000",
@@ -19,13 +19,6 @@
             "address2": "abc",
             "cityId": "PUNE_MAHARASHTRA",
             "state": "Maharashtra"
-        },
-        "otherDetails": {
-            "imei": "512969993604658",
-            "make": "Google",
-            "model": "Pixel 4a",
-            "dateOfPurchase": "28/04/2022",
-            "mobileBillInvoiceId": "hgasgajdacas cbas"
         }
     }
 }

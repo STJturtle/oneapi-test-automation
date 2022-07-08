@@ -8,14 +8,23 @@ const mobileQuoteData = require("./mobile/quote.json");
 const mobileProposalData = require("./mobile/proposal.json");
 const mobilePaymentData = require("./mobile/payment.json");
 
+const shopQuoteData = require("./shop/quote.json");
+const shopProposalData = require("./shop/proposal.json");
+const shopPaymentData = require("./shop/payment.json");
+
+const vectorborneQuoteData = require("./vector-borne/quote.json");
+const vectorborneProposalData = require("./vector-borne/proposal.json");
+const vectorbornePaymentData = require("./vector-borne/payment.json");
+
 // update hardcoded values
 const vertical = "hospicash";
 const profile = "local";
 
 const url = profile==="local" ? "http://localhost:9098" : "https://app.skyfall.turtle-feature.com";
-const quoteData = vertical === "hospicash" ? hospicashQuoteData : mobileQuoteData;
-const proposalData = vertical === "hospicash" ? hospicashProposalData : mobileProposalData;
-const paymentData = vertical === "hospicash" ? hospicashPaymentData : mobilePaymentData;
+
+const quoteData = eval(`${vertical}QuoteData`.replace (/-/g, ""))
+const proposalData = eval(`${vertical}ProposalData`.replace (/-/g, ""))
+const paymentData = eval(`${vertical}PaymentData`.replace (/-/g, ""))
 
 async function createQuote() {
     console.log("getting ready with quote for", vertical)
@@ -37,9 +46,9 @@ async function getQuote(referenceId, quoteId, insurerCode) {
         .get(
             `${url}/api/minterprise/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`
         )
-        .then(function (response) {
+        .then(async (response) =>{
             console.log("referenceId = " , response.data.data.referenceId, " Premium Result Id = " ,response.data.data.premiumResultId);
-            getProposal(response.data.data.referenceId, response.data.data.premiumResultId);
+            await getProposal(response.data.data.referenceId, response.data.data.premiumResultId);
         })
         .catch(function (error) {
             console.log(error);
@@ -57,9 +66,9 @@ async function getProposal(referenceId, premiumResultId) {
             `${url}/api/minterprise/v1/products/${vertical}/proposals`,
             proposalData
         )
-        .then((response) => {
+        .then(async (response) => {
             console.log("Proposal Id -- > " + (response.data.data.proposalId));
-            generateLink(referenceId, response.data.data.proposalId);
+            await generateLink(referenceId, response.data.data.proposalId);
         })
         .catch(function (error) {
             console.log(error);
@@ -86,4 +95,3 @@ async function generateLink(referenceId, proposalId) {
 }
 
 createQuote();
-

@@ -1,11 +1,11 @@
 {
     "data": {
-        "productCode": "mobile",
+        "productCode": "vector-borne",
         "businessType": "NEW",
-        "planCode": "MOBILE_EW",
+        "planCode": "DENGUE_COVER",
         "premiumRequest": {
             "riskInsured": {
-                "sumInsured": 20000
+                "sumInsured": 10000
             }
         }
     }

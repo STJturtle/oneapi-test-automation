@@ -1,11 +1,11 @@
 {
     "data": {
-        "productCode": "mobile",
         "businessType": "NEW",
-        "planCode": "MOBILE_EW",
+        "productCode": "shop",
+        "planCode": "CONTENTS",
         "premiumRequest": {
             "riskInsured": {
-                "sumInsured": 20000
+                "contentSumInsured": 500000
             }
         }
     }
