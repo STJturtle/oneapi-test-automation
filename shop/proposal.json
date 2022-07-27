@@ -1,39 +1,38 @@
 {
     "data": {
-        "premiumResultId": "62c262a959007d5d4bd193d7",
-        "referenceId": "AGPF4FHTR7K",
-        "insurerCode": "DIGIT",
-        "productCode": "shop",
-        "personalDetails": {
-            "title": "Mr",
-            "firstName": "John",
-            "lastName": "Doe",
-            "email": "sumit.jadiya@turtlemint.com",
-            "mobile": "6100000000",
-            "dob": "12/10/1992"
-        },
-        "registeredAddress": {
-            "city": "PUNE",
-            "pincode": "411045",
-            "address1": "qweqw",
-            "address2": "abc",
-            "state": "Maharashtra"
-        },
-        "otherDetails": {
-            "propertyType": "Rented",
-            "occupancy": "Automobiles & Electronics",
-            "shopSubCategory": "Automobile Parts and Accessories",
-            "shopAddress": {
-                "city": "NewDelhi",
-                "pincode": "110017",
-                "address1": "xyz dd",
-                "address2": "abc",
-                "state": "Delhi"
-            },
-            "propertyAge": 20,
-            "constructionType": "Pakka",
-            "basementRisk": "No"
-        }
-    },
-    "meta": {}
-}
+       "premiumResultId": "62d544da8fb5f70818903dc7",
+       "referenceId": "AGPVALLFKT7",
+       "payMode": "ONLINE",
+       "insurerCode": "DIGIT",
+       "productCode": "shop",
+       "personalDetails": {
+          "title": "Mr",
+          "firstName": "John",
+          "lastName": "sdsd",
+          "email": "sumit.jadiya@turtlemint.com",
+          "mobile": "6100000000",
+          "dob": "01/01/1992"
+       },
+       "registeredAddress": {
+          "city": "pune",
+          "pincode": "400001",
+          "address1": "dfd",
+          "address2": "cds"
+       },
+       "otherDetails": {
+          "propertyType": "RENTED",
+          "occupancy": "Grocery, General & Stationery Stores",
+          "shopSubCategory": "Gift, Novelty, and Souvenir Stores",
+          "shopAddress": {
+             "city": "Pune",
+             "pincode": "411007",
+             "address1": "asa",
+             "address2": "sdsd",
+             "state": "Maharashtra"
+          },
+          "propertyAge": "10",
+          "constructionType": "PAKKA",
+          "basementRisk": "NO"
+       }
+    }
+ }

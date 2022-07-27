@@ -20,37 +20,49 @@ const vectorbornePaymentData = require("./vector-borne/payment.json");
 const vertical = "hospicash";
 const profile = "local";
 
-const url = profile==="local" ? "http://localhost:9098" : "https://app.skyfall.turtle-feature.com";
+const url = profile === "local" ? "http://localhost:9098" : "https://app.skyfall.turtle-feature.com";
 
-const quoteData = eval(`${vertical}QuoteData`.replace (/-/g, ""))
-const proposalData = eval(`${vertical}ProposalData`.replace (/-/g, ""))
-const paymentData = eval(`${vertical}PaymentData`.replace (/-/g, ""))
+const quoteData = eval(`${vertical}QuoteData`.replace(/-/g, ""))
+const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ""))
+const paymentData = eval(`${vertical}PaymentData`.replace(/-/g, ""))
 
 async function createQuote() {
     console.log("getting ready with quote for", vertical)
-     axios
+    axios
         .post(
             `${url}/api/minterprise/v1/products/${vertical}/quotes`, quoteData
         )
         .then(async (response) => {
-            console.log("referenceId = " , response.data.data.referenceId, " quoteId = " ,response.data.data.quoteId, " Insurer Code = " ,response.data.data.fetchQuoteLinks[0].insurerCode);
-            await getQuote(response.data.data.referenceId, response.data.data.quoteId, response.data.data.fetchQuoteLinks[0].insurerCode);
+
+                let element = response.data.data
+                console.log("referenceId = ", element.referenceId, " quoteId = ", element.quoteId, " Insurer Code = ", element.fetchQuoteLinks[0].insurerCode);
+
+                element.fetchQuoteLinks.forEach(async element => {
+                    await getQuote(element.link);
+
+                    console.log()
+
+                })
         })
-        .catch(function (error) {
+        .catch(function(error) {
             console.log(error);
         });
 }
 
-async function getQuote(referenceId, quoteId, insurerCode) {
-     axios
+async function getQuote(quoteURL) {
+    axios
         .get(
-            `${url}/api/minterprise/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`
+            `${quoteURL}`
         )
-        .then(async (response) =>{
-            console.log("referenceId = " , response.data.data.referenceId, " Premium Result Id = " ,response.data.data.premiumResultId);
-            await getProposal(response.data.data.referenceId, response.data.data.premiumResultId);
+        .then(async (response) => {
+
+            let data = response.data.data
+            console.log("referenceId = ", data?.referenceId, " Premium Result Id = ", data?.premiumResultId, " Insurer Code = ", data?.premiumResults.insurerCode );
+            console.log("total Premium = ", data?.premiumResults?.totalPremium, " Net Premium = ", data?.premiumResults?.netPremium);
+            await getProposal(data?.referenceId, data?.premiumResultId);
+            console.log()
         })
-        .catch(function (error) {
+        .catch(function(error) {
             console.log(error);
         });
 }
@@ -68,9 +80,9 @@ async function getProposal(referenceId, premiumResultId) {
         )
         .then(async (response) => {
             console.log("Proposal Id -- > " + (response.data.data.proposalId));
-            await generateLink(referenceId, response.data.data.proposalId);
+            // await generateLink(referenceId, response.data.data.proposalId);
         })
-        .catch(function (error) {
+        .catch(function(error) {
             console.log(error);
         });
 }
@@ -89,8 +101,8 @@ async function generateLink(referenceId, proposalId) {
         .then((response) => {
             console.log("Payment Link -- > " + (response.data.data.paymentLink));
         })
-        .catch(function (error) {
-            console.log("error"+ error);
+        .catch(function(error) {
+            console.log("error" + error);
         });
 }
 
