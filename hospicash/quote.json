@@ -5,7 +5,7 @@
         "businessType": "NEW",
         "premiumRequest": {
             "riskInsured": {
-                "sumInsured": 1000
+                "sumInsured": 500
             }
         }
     }

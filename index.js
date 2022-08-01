@@ -17,8 +17,8 @@ const vectorborneProposalData = require("./vector-borne/proposal.json");
 const vectorbornePaymentData = require("./vector-borne/payment.json");
 
 // update hardcoded values
-const vertical = "hospicash";
-const profile = "local";
+const vertical = "mobile";
+const profile = "UAT";
 
 const url = profile === "local" ? "http://localhost:9098" : "https://app.skyfall.turtle-feature.com";
 
@@ -35,14 +35,17 @@ async function createQuote() {
         .then(async (response) => {
 
                 let element = response.data.data
-                console.log("referenceId = ", element.referenceId, " quoteId = ", element.quoteId, " Insurer Code = ", element.fetchQuoteLinks[0].insurerCode);
+                console.log("[createQuote] referenceId = ", element.referenceId, " quoteId = ", element.quoteId, " Insurer Code = ", element.fetchQuoteLinks[0].insurerCode);
 
                 element.fetchQuoteLinks.forEach(async element => {
                     await getQuote(element.link);
 
                     console.log()
-
                 })
+
+                console.log( " --- quote with proposal ----")
+                await getQuoteWithProposal(element.fetchQuoteLinks[0].link);
+                console.log()
         })
         .catch(function(error) {
             console.log(error);
@@ -57,9 +60,28 @@ async function getQuote(quoteURL) {
         .then(async (response) => {
 
             let data = response.data.data
-            console.log("referenceId = ", data?.referenceId, " Premium Result Id = ", data?.premiumResultId, " Insurer Code = ", data?.premiumResults.insurerCode );
-            console.log("total Premium = ", data?.premiumResults?.totalPremium, " Net Premium = ", data?.premiumResults?.netPremium);
-            await getProposal(data?.referenceId, data?.premiumResultId);
+            console.log("[getQuote] referenceId = ", data?.referenceId, " Premium Result Id = ", data?.premiumResultId, " Insurer Code = ", data?.premiumResults.insurerCode );
+            console.log("[getQuote] total Premium = ", data?.premiumResults?.totalPremium, " Net Premium = ", data?.premiumResults?.netPremium);
+            
+        //    await getProposal(data?.referenceId, data?.premiumResultId);
+            console.log()
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+}
+async function getQuoteWithProposal(quoteURL) {
+    axios
+        .get(
+            `${quoteURL}`
+        )
+        .then(async (response) => {
+
+            let data = response.data.data
+            console.log("[getQuoteWithProposal] referenceId = ", data?.referenceId, " Premium Result Id = ", data?.premiumResultId, " Insurer Code = ", data?.premiumResults.insurerCode );
+            console.log("[getQuoteWithProposal] total Premium = ", data?.premiumResults?.totalPremium, " Net Premium = ", data?.premiumResults?.netPremium);
+            
+           await getProposal(data?.referenceId, data?.premiumResultId);
             console.log()
         })
         .catch(function(error) {
@@ -69,6 +91,7 @@ async function getQuote(quoteURL) {
 
 async function getProposal(referenceId, premiumResultId) {
     console.log("creating proposal");
+    console.log()
 
     proposalData.data.premiumResultId = premiumResultId;
     proposalData.data.referenceId = referenceId;
@@ -79,8 +102,11 @@ async function getProposal(referenceId, premiumResultId) {
             proposalData
         )
         .then(async (response) => {
-            console.log("Proposal Id -- > " + (response.data.data.proposalId));
-            // await generateLink(referenceId, response.data.data.proposalId);
+            let data = response.data.data
+
+            // console.log(data?.insurerCode)
+            console.log("[getProposal] Proposal Id -- > " + (data?.proposalId));
+            await generateLink(referenceId, data?.proposalId);
         })
         .catch(function(error) {
             console.log(error);
