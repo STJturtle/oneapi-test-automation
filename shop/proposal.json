@@ -1,38 +1,39 @@
 {
-    "data": {
-       "premiumResultId": "62d544da8fb5f70818903dc7",
-       "referenceId": "AGPVALLFKT7",
-       "payMode": "ONLINE",
-       "insurerCode": "DIGIT",
-       "productCode": "shop",
-       "personalDetails": {
-          "title": "Mr",
-          "firstName": "John",
-          "lastName": "sdsd",
-          "email": "sumit.jadiya@turtlemint.com",
-          "mobile": "6100000000",
-          "dob": "01/01/1992"
-       },
-       "registeredAddress": {
-          "city": "pune",
-          "pincode": "400001",
-          "address1": "dfd",
-          "address2": "cds"
-       },
-       "otherDetails": {
-          "propertyType": "RENTED",
-          "occupancy": "Grocery, General & Stationery Stores",
-          "shopSubCategory": "Gift, Novelty, and Souvenir Stores",
-          "shopAddress": {
-             "city": "Pune",
-             "pincode": "411007",
-             "address1": "asa",
-             "address2": "sdsd",
-             "state": "Maharashtra"
-          },
-          "propertyAge": "10",
-          "constructionType": "PAKKA",
-          "basementRisk": "NO"
-       }
-    }
- }
+   "data": {
+      "premiumResultId": "62f3647bcc43fe62d54d3304",
+      "referenceId": "AGQL3AGRJLV",
+      "payMode": "ONLINE",
+      "insurerCode": "DIGIT",
+      "productCode": "shop",
+      "personalDetails": {
+         "title": "Mr",
+         "firstName": "John",
+         "lastName": "sdsd",
+         "email": "sumit.jadiya@turtlemint.com",
+         "mobile": "6100000000",
+         "dob": "01/01/1982"
+      },
+      "registeredAddress": {
+         "city": "pune",
+         "pincode": "110006",
+         "address1": "dfd",
+         "address2": "cds"
+      },
+      "otherDetails": {
+        "shopName":"sampleName",
+         "propertyType": "RENTED",
+         "occupancy": "Grocery, General & Stationery Stores",
+         "shopSubCategory": "Gift, Novelty, and Souvenir Stores",
+         "shopAddress": {
+            "city": "Pune",
+            "pincode": "411013",
+            "address1": "asa",
+            "address2": "sdsd",
+            "state": "Maharashtra"
+         },
+         "propertyAge": "29",
+         "constructionType": "PAKKA",
+         "shopFloor": "1"
+      }
+   }
+}

@@ -17,17 +17,18 @@ const vectorborneProposalData = require("./vector-borne/proposal.json");
 const vectorbornePaymentData = require("./vector-borne/payment.json");
 
 // update hardcoded values
-const vertical = "mobile";
-const profile = "UAT";
+const vertical = "shop";
+const profile = "prod";
 
-const url = profile === "local" ? "http://localhost:9098" : "https://app.skyfall.turtle-feature.com";
+const url = profile === "local" ? "http://localhost:9098" : (profile === "prod" ? "https://app.turtlemint.com" : "https://app.skyfall.turtle-feature.com");
 
 const quoteData = eval(`${vertical}QuoteData`.replace(/-/g, ""))
 const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ""))
 const paymentData = eval(`${vertical}PaymentData`.replace(/-/g, ""))
+const tenant = vertical === "mobile" ? "turtlemint" : "pharmeasy";
 
 async function createQuote() {
-    console.log("getting ready with quote for", vertical)
+    console.log(`[${profile}] - getting ready with quote for`, vertical)
     axios
         .post(
             `${url}/api/minterprise/v1/products/${vertical}/quotes`, quoteData
@@ -53,6 +54,7 @@ async function createQuote() {
 }
 
 async function getQuote(quoteURL) {
+    console.log("quoteURL = " + quoteURL)
     axios
         .get(
             `${quoteURL}`
@@ -106,7 +108,21 @@ async function getProposal(referenceId, premiumResultId) {
 
             // console.log(data?.insurerCode)
             console.log("[getProposal] Proposal Id -- > " + (data?.proposalId));
-            await generateLink(referenceId, data?.proposalId);
+
+            console.log(`curl --location --request POST '$${url}/api/minterprise/v1/products/${vertical}/payments/link' \
+            --header 'x-tenant: pharmeasy' \
+            --header 'x-broker: turtlemint' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "data": {
+                    "productCode": "${vertical}",
+                    "insurerCode": "${data?.insurerCode}",
+                    "proposalId": "${data?.proposalId}",
+                    "referenceId": "${referenceId}"
+                }
+            }'`)
+
+            // await generateLink(referenceId, data?.proposalId);
         })
         .catch(function(error) {
             console.log(error);
@@ -125,6 +141,7 @@ async function generateLink(referenceId, proposalId) {
             paymentData
         )
         .then((response) => {
+            console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
             console.log("Payment Link -- > " + (response.data.data.paymentLink));
         })
         .catch(function(error) {
