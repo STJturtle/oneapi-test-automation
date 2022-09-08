@@ -1,0 +1,44 @@
+{
+    "data": {
+        "productCode": "credit-life",
+        "premiumResultId": "631084e79a5654665d840928",
+        "referenceId": "AGRA18VM3UR",
+        "insurerCode": "KOTAK",
+        "payMode": "ONLINE",
+        "personalDetails": {
+            "title": "Mr",
+            "firstName": "Ashra",
+            "lastName": "Doe",
+            "email": "sumit.jadiya@turtlemint.com",
+            "mobile": "6100000000",
+            "dob": "12/10/1992"
+        },
+        "registeredAddress": {
+            "city": "PUNE",
+            "pincode": "411045",
+            "address1": "xyz dd",
+            "address2": "abc",
+            "state": "Maharashtra"
+        },
+        "otherDetails": {
+            "loanCommencementDate": "15/08/2022",
+            "policyRole": "SINGLE",
+            "gender": "MALE",
+            "nomineeDetails": {
+                "firstName": "Nisha",
+                "lastName": "Ashra",
+                "dob": "12/10/1980",
+                "relationship": "MOTHER"
+            }
+        },
+        "medicalQuestions": {
+            "DURING THE LAST THREE YEARS": {
+                "Has the life to be insured consulted a Medical Practitioner for any ailment/injury requiring treatment for more than 7 days?": "YES",
+                "Has the life to be insured remained absent from his/her place of work for more than 7 days,on health grounds or claimed against his/her health insurance policies?": "NO"
+            },
+            "DURING LIFETIME": {
+                "High or low blood pressure, rheumatic fever, chest pain, myocardial infarction or any other disease or disorder of the heart or arteries?": "NO"
+            }
+        }
+    }
+}
