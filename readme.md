@@ -1,10 +1,11 @@
 ### steps to run
 
--   npm install
+- npm install
+- Run - node file > target environmane productCode
+- Ex - node index.js > result.txt local shop
 
--   node index.js > result.txt
+### ProductCodes
 
-### Verticals
 Hospicash -> code = hospicash
 Mobile -> code = mobile
 Shop -> code = shop

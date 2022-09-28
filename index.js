@@ -23,9 +23,15 @@ const creditlifeProposalData = require('./credit-life/proposal.json')
 const creditlifePaymentData = require('./credit-life/payment.json')
 const creditlifeHeaderData = require('./credit-life/header.json')
 
-// update hardcoded values
-const vertical = 'credit-life'
-const profile = 'uat'
+const vertical = process.argv[3]
+const profile = process.argv[2]
+
+const defaultHeaderData = {
+  headers: {
+    'x-tenant': 'turtlemint',
+    'x-broker': 'turtlemint',
+  },
+}
 
 const url =
   profile === 'local'
@@ -37,9 +43,13 @@ const url =
 const quoteData = eval(`${vertical}QuoteData`.replace(/-/g, ''))
 const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ''))
 const paymentData = eval(`${vertical}PaymentData`.replace(/-/g, ''))
-const paymentHeader = eval(`${vertical}HeaderData`.replace(/-/g, ''))
+let paymentHeader
 
-const tenant = vertical === 'mobile' ? 'turtlemint' : 'pharmeasy'
+try {
+  paymentHeader = eval(`${vertical}HeaderData`.replace(/-/g, ''))
+} catch (e) {
+  paymentHeader = defaultHeaderData
+}
 
 async function createQuote() {
   console.log(`[${profile}] - getting ready with quote for`, vertical)
