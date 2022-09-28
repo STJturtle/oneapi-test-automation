@@ -7,10 +7,12 @@ const hospicashPaymentData = require('./hospicash/payment.json')
 const mobileQuoteData = require('./mobile/quote.json')
 const mobileProposalData = require('./mobile/proposal.json')
 const mobilePaymentData = require('./mobile/payment.json')
+const mobileHeaderData = require('./mobile/header.json')
 
 const shopQuoteData = require('./shop/quote.json')
 const shopProposalData = require('./shop/proposal.json')
 const shopPaymentData = require('./shop/payment.json')
+const shopHeaderData = require('./shop/header.json')
 
 const vectorborneQuoteData = require('./vector-borne/quote.json')
 const vectorborneProposalData = require('./vector-borne/proposal.json')
@@ -19,10 +21,11 @@ const vectorbornePaymentData = require('./vector-borne/payment.json')
 const creditlifeQuoteData = require('./credit-life/quote.json')
 const creditlifeProposalData = require('./credit-life/proposal.json')
 const creditlifePaymentData = require('./credit-life/payment.json')
+const creditlifeHeaderData = require('./credit-life/header.json')
 
 // update hardcoded values
-const vertical = 'shop'
-const profile = 'prod'
+const vertical = 'credit-life'
+const profile = 'uat'
 
 const url =
   profile === 'local'
@@ -34,13 +37,18 @@ const url =
 const quoteData = eval(`${vertical}QuoteData`.replace(/-/g, ''))
 const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ''))
 const paymentData = eval(`${vertical}PaymentData`.replace(/-/g, ''))
+const paymentHeader = eval(`${vertical}HeaderData`.replace(/-/g, ''))
 
 const tenant = vertical === 'mobile' ? 'turtlemint' : 'pharmeasy'
 
 async function createQuote() {
   console.log(`[${profile}] - getting ready with quote for`, vertical)
   axios
-    .post(`${url}/api/minterprise/v1/products/${vertical}/quotes`, quoteData)
+    .post(
+      `${url}/api/minterprise/v1/products/${vertical}/quotes`,
+      quoteData,
+      paymentHeader
+    )
     .then(async (response) => {
       let element = response.data.data
       console.log(
@@ -131,7 +139,11 @@ async function getProposal(referenceId, premiumResultId) {
   proposalData.data.referenceId = referenceId
 
   axios
-    .post(`${url}/api/minterprise/v1/products/${vertical}/proposals`, proposalData)
+    .post(
+      `${url}/api/minterprise/v1/products/${vertical}/proposals`,
+      proposalData,
+      paymentHeader
+    )
     .then(async (response) => {
       let data = response.data.data
 
@@ -151,6 +163,8 @@ async function getProposal(referenceId, premiumResultId) {
                 }
             }'`)
 
+      console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
+
       await generateLink(referenceId, data?.proposalId)
     })
     .catch(function (error) {
@@ -163,8 +177,13 @@ async function generateLink(referenceId, proposalId) {
   paymentData.data.proposalId = proposalId
 
   console.log('fetching payment link')
+
   await axios
-    .post(`${url}/api/minterprise/v1/products/${vertical}/payments/link`, paymentData)
+    .post(
+      `${url}/api/minterprise/v1/products/${vertical}/payments/link`,
+      paymentData,
+      paymentHeader
+    )
     .then((response) => {
       console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
       console.log('Payment Link -- > ' + response.data.data.paymentLink)

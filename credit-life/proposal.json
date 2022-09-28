@@ -1,44 +1,114 @@
 {
-    "data": {
-        "productCode": "credit-life",
-        "premiumResultId": "631084e79a5654665d840928",
-        "referenceId": "AGRA18VM3UR",
-        "insurerCode": "KOTAK",
-        "payMode": "ONLINE",
-        "personalDetails": {
-            "title": "Mr",
-            "firstName": "Ashra",
-            "lastName": "Doe",
-            "email": "sumit.jadiya@turtlemint.com",
-            "mobile": "6100000000",
-            "dob": "12/10/1992"
+  "data": {
+    "premiumResultId": "6333fa175e7a2d5d530c1492",
+    "referenceId": "AGS4EDZ64NT",
+    "payMode": "ONLINE",
+    "insurerCode": "KOTAK",
+    "productCode": "credit-life",
+    "personalDetails": {
+      "title": "Mr",
+      "firstName": "sumit",
+      "lastName": "jadiya",
+      "email": "sumit.jadiya@turtlemint.com",
+      "mobile": "8376455287",
+      "dob": "05/01/1994"
+    },
+    "registeredAddress": {
+      "city": "Pune",
+      "pincode": "411012",
+      "address1": "pune",
+      "address2": ""
+    },
+    "otherDetails": {
+      "nomineeDetails": {
+        "title": "Mr",
+        "firstName": "john",
+        "lastName": "doe",
+        "dob": "05/01/1994",
+        "relationship": "BROTHER"
+      },
+      "loanCommencementDate": "28/09/2022",
+      "policyRole": "SINGLE"
+    },
+    "medicalQuestions": {
+      "631ac31b70bd7a4c313d3c24": {
+        "631ac31b70bd7a4c313d3c25": {
+          "questionDescription": "Has the life to be insured consulted a Medical Practitioner for any ailment/injury requiring treatment for more than 7 days?",
+          "answer": "NO"
         },
-        "registeredAddress": {
-            "city": "PUNE",
-            "pincode": "411045",
-            "address1": "xyz dd",
-            "address2": "abc",
-            "state": "Maharashtra"
+        "631ac31b70bd7a4c313d3c26": {
+          "questionDescription": "Has the life to be insured remained absent from his/her place of work for more than 7 days,on health grounds or claimed against his/her health insurance policies?",
+          "answer": "NO"
         },
-        "otherDetails": {
-            "loanCommencementDate": "15/08/2022",
-            "policyRole": "SINGLE",
-            "gender": "MALE",
-            "nomineeDetails": {
-                "firstName": "Nisha",
-                "lastName": "Ashra",
-                "dob": "12/10/1980",
-                "relationship": "MOTHER"
-            }
-        },
-        "medicalQuestions": {
-            "DURING THE LAST THREE YEARS": {
-                "Has the life to be insured consulted a Medical Practitioner for any ailment/injury requiring treatment for more than 7 days?": "YES",
-                "Has the life to be insured remained absent from his/her place of work for more than 7 days,on health grounds or claimed against his/her health insurance policies?": "NO"
-            },
-            "DURING LIFETIME": {
-                "High or low blood pressure, rheumatic fever, chest pain, myocardial infarction or any other disease or disorder of the heart or arteries?": "NO"
-            }
+        "631ac31b70bd7a4c313d3c27": {
+          "questionDescription": "Has the life to be insured undergone any cardiological/pathological or radiological tests,other than routine testing for insurance or employment?",
+          "answer": "NO"
         }
+      },
+      "631ac31b70bd7a4c313d3c28": {
+        "631ac31b70bd7a4c313d3c29": {
+          "questionDescription": "High or low blood pressure, rheumatic fever, chest pain, myocardial infarction or any other disease or disorder of the heart or arteries?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c2a": {
+          "questionDescription": "Jaundice, anaemia, piles, ulcers, dysentery, diabetes mellitus or any other disease of the stomach, liver, spleen, gall bladder or pancreas?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c2b": {
+          "questionDescription": "Asthma, bronchitis, pleurisy, tuberculosis or any other disease or disorder of lungs?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c2c": {
+          "questionDescription": "Paralysis, epilepsy, fits or any kind of nervous breakdown or any other disease related to the brain or the nervous system or arthritic, skeletal or joint disorders?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c2d": {
+          "questionDescription": "Any disease or disorder of ear, nose, eyes or throat, including defective sight or hearing and discharge from ears?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c2e": {
+          "questionDescription": "Cancer, leprosy, rheumatism, gout, enlarged glands or tumors?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c2f": {
+          "questionDescription": "Any disease or disorder of kidney, prostate, urinary system or reproductive system?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c30": {
+          "questionDescription": "Hernia, hydrocele, goitre, gonorrhea, syphilis or any other venereal disease?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c31": {
+          "questionDescription": "Any other illness/impairment/disability not mentioned above?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c32": {
+          "questionDescription": "Is the life to be insured or partner HIV positive or suffering from AIDS, hepatitis?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c33": {
+          "questionDescription": "Has the life to be insured or partner ever been tested for HIV/hepatitis, other than routine testing for insurance or employment?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c34": {
+          "questionDescription": "Does the life to be insured have any physical defect/ deformity?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c35": {
+          "questionDescription": "Has the life to be insured ever had any accident requiring hospitalization or undergone any treatment or operation for any ailment not mentioned above?",
+          "answer": "NO"
+        }
+      },
+      "631ac31b70bd7a4c313d3c36": {
+        "631ac31b70bd7a4c313d3c37": {
+          "questionDescription": "Is the life to be insured pregnant now?",
+          "answer": "NO"
+        },
+        "631ac31b70bd7a4c313d3c38": {
+          "questionDescription": "Has the life to be insured had any abortion or miscarriage or caesarian section?",
+          "answer": "NO"
+        }
+      }
     }
+  }
 }

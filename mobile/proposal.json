@@ -1,31 +1,31 @@
 {
-    "data": {
-        "premiumResultId": "62c57575401bac51213f075d",
-        "referenceId": "AGPHR6KTLVM",
-        "insurerCode": "HDFC",
-        "productCode": "mobile",
-        "personalDetails": {
-            "title": "Mr",
-            "firstName": "sumit",
-            "lastName": "Doe",
-            "email": "sumit.jadiya@turtlemint.com",
-            "mobile": "6100000000",
-            "dob": "12/10/1992"
-        },
-        "registeredAddress": {
-            "city": "PUNE",
-            "pincode": "411045",
-            "address1": "xyz dd",
-            "address2": "abc",
-            "cityId": "PUNE_MAHARASHTRA",
-            "state": "Maharashtra"
-        },
-        "otherDetails": {
-            "imei": "512969993604658",
-            "make": "Google",
-            "model": "Pixel 4a",
-            "dateOfPurchase": "28/04/2022",
-            "mobileBillInvoiceId": "hgasgajdacas cbas"
-        }
+  "data": {
+    "premiumResultId": "62c57575401bac51213f075d",
+    "referenceId": "AGPHR6KTLVM",
+    "insurerCode": "HDFC",
+    "productCode": "mobile",
+    "personalDetails": {
+      "title": "Mr",
+      "firstName": "sumit",
+      "lastName": "Doe",
+      "email": "sumit.jadiya@turtlemint.com",
+      "mobile": "6100000000",
+      "dob": "12/10/1992"
+    },
+    "registeredAddress": {
+      "city": "PUNE",
+      "pincode": "411045",
+      "address1": "xyz dd",
+      "address2": "abc",
+      "cityId": "PUNE_MAHARASHTRA",
+      "state": "Maharashtra"
+    },
+    "otherDetails": {
+      "imei": "512969993604658",
+      "make": "Google",
+      "model": "Pixel 4a",
+      "dateOfPurchase": "28/04/2022",
+      "mobileBillInvoiceId": "hgasgajdacas cbas"
     }
+  }
 }
