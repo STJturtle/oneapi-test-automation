@@ -6,8 +6,8 @@
 
 ### ProductCodes
 
-Hospicash -> code = hospicash
-Mobile -> code = mobile
-Shop -> code = shop
-Vector Borne -> code = vector-borne
-Credit life -> code = credit-life
+Hospicash -> code = hospicash <br/>
+Mobile -> code = mobile <br/>
+Shop -> code = shop <br/>
+Vector Borne -> code = vector-borne <br/>
+Credit life -> code = credit-life <br/>
