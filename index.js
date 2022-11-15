@@ -143,10 +143,13 @@ async function getQuoteWithProposal(quoteURL) {
 
 async function getProposal(referenceId, premiumResultId) {
   console.log('creating proposal')
-  console.log()
+  console.log("returnDateOfPurchase() == " + returnDateOfPurchase())
+
+
 
   proposalData.data.premiumResultId = premiumResultId
   proposalData.data.referenceId = referenceId
+  proposalData.data.otherDetails.dateOfPurchase = returnDateOfPurchase()
 
   axios
     .post(
@@ -197,6 +200,9 @@ async function generateLink(referenceId, proposalId) {
     .then((response) => {
       console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
       console.log('Payment Link -- > ' + response.data.data.paymentLink)
+      console.log("")
+      console.log("")
+      console.log(" - - - - - - - - - - - - - - - - - - - -")
     })
     .catch(function (error) {
       console.log('error' + error)
@@ -204,3 +210,12 @@ async function generateLink(referenceId, proposalId) {
 }
 
 createQuote()
+
+function returnDateOfPurchase() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  return dd + '/' + mm + '/' + yyyy;
+}
