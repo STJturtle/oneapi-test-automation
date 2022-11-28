@@ -1,0 +1,39 @@
+{
+  "data": {
+      "premiumResultId": "637b06afecd8dd2b253bd7cd",
+      "referenceId": "AGTT8SHQJUP",
+      "payMode": "ONLINE",
+      "insurerCode": "STARHEALTH",
+      "productCode": "group-personal-accident",
+      "personalDetails": {
+          "title": "Mr",
+          "firstName": "gaurav",
+          "lastName": "qwr",
+          "email": "gaurav.arora@turtlemint.com",
+          "mobile": "9810040985",
+          "dob": "01/01/1992",
+          "gender": "MALE"
+      },
+      "registeredAddress": {
+          "city": "new Delhi",
+          "pincode": "110017",
+          "address1": "qwe",
+          "address2": "wqe"
+      },
+      "otherDetails": {
+          "nomineeDetails": {
+              "title": "Mr",
+              "firstName": "gaurav",
+              "lastName": "qwr",
+              "dob": "01/01/1992",
+              "relationship": "BROTHER"
+          },
+          "communicationAddress": {
+              "city": "new Delhi",
+              "address1": "qwe",
+              "address2": "wqe",
+              "state": "delhi"
+          }
+      }
+  }
+}

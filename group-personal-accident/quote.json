@@ -1,0 +1,13 @@
+{
+    "data": {
+        "productCode": "group-personal-accident",
+        "policyType": "BASIC",
+        "planCode":"GROUP_PERSONAL_ACCIDENT",
+        "businessType": "NEW",
+        "premiumRequest": {
+            "riskInsured": {
+                "sumInsured": "500000"
+            }
+        }
+    }
+}

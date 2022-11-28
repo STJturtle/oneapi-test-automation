@@ -24,6 +24,11 @@ const creditlifeProposalData = require('./credit-life/proposal.json')
 const creditlifePaymentData = require('./credit-life/payment.json')
 const creditlifeHeaderData = require('./credit-life/header.json')
 
+const grouppersonalaccidentQuoteData = require('./group-personal-accident/quote.json')
+const grouppersonalaccidentProposalData = require('./group-personal-accident/proposal.json')
+const grouppersonalaccidentPaymentData = require('./group-personal-accident/payment.json')
+const grouppersonalaccidentHeaderData = require('./group-personal-accident/header.json')
+
 const { APIGEE_UAT, APIGEE_PROD, APIGEE_VERSION, MINTERPRISE_LOCAL, MINTERPRISE_UAT, MINTERPRISE_PROD, MINTERPRISE_VERSION } = require('./constants.js');
 
 const vertical = process.argv[3]
