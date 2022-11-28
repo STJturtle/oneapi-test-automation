@@ -29,7 +29,7 @@ const grouppersonalaccidentProposalData = require('./group-personal-accident/pro
 const grouppersonalaccidentPaymentData = require('./group-personal-accident/payment.json')
 const grouppersonalaccidentHeaderData = require('./group-personal-accident/header.json')
 
-const { APIGEE_UAT, APIGEE_PROD, APIGEE_VERSION, MINTERPRISE_LOCAL, MINTERPRISE_UAT, MINTERPRISE_PROD, MINTERPRISE_VERSION } = require('./constants.js');
+const { APIGEE_UAT, APIGEE_PROD, APIGEE_VERSION, APIGEE_TOKEN } = require('./constants.js');
 
 const vertical = process.argv[3]
 const profile = process.argv[2]
@@ -38,7 +38,7 @@ const appName = process.argv[4]
 const defaultHeaderData = {
   headers: {
     'x-tenant': 'turtlemint',
-    'x-broker': 'turtlemint',
+    'x-broker': 'turtlemint'
   },
 }
 var url
@@ -61,6 +61,8 @@ try {
   paymentHeader = defaultHeaderData
 }
 
+paymentHeader.headers.Authorization = "Bearer " + APIGEE_TOKEN
+
 async function createQuote() {
   console.log(`[${profile}] - getting ready with quote for`, vertical, `${url}${version}/v1/products/${vertical}/quotes`)
 
@@ -81,14 +83,8 @@ async function createQuote() {
         element.fetchQuoteLinks[0].insurerCode
       )
 
-      // element.fetchQuoteLinks.forEach(async (element) => {
-      //   await getQuote(element.link)
-
-      //   console.log()
-      // })
-
       console.log(' --- quote with proposal ----')
-      // console.log(element)
+
       await getQuoteWithProposal(element.referenceId, element.fetchQuoteLinks[0].link)
       console.log()
     })
@@ -146,19 +142,6 @@ async function getProposal(referenceId, premiumResultId) {
 
       // console.log(data?.insurerCode)
       console.log('[getProposal] Proposal Id -- > ' + data?.proposalId)
-
-      // console.log(`curl --location --request POST '$${url}/api/minterprise/v1/products/${vertical}/payments/link' \
-      //       --header 'x-tenant: pharmeasy' \
-      //       --header 'x-broker: turtlemint' \
-      //       --header 'Content-Type: application/json' \
-      //       --data-raw '{
-      //           "data": {
-      //               "productCode": "${vertical}",
-      //               "insurerCode": "${data?.insurerCode}",
-      //               "proposalId": "${data?.proposalId}",
-      //               "referenceId": "${referenceId}"
-      //           }
-      //       }'`)
               
       console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
