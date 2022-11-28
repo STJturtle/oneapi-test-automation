@@ -1,6 +1,7 @@
 {
   "headers": {
     "x-tenant": "pharmeasy",
-    "x-broker": "turtlemint"
+    "x-broker": "turtlemint",
+    "Authorization": "Bearer OlbW8Je5GPjxytL+yxhLmA=="
   }
 }
