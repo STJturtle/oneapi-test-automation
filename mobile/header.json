@@ -1,6 +1,7 @@
 {
   "headers": {
     "x-tenant": "turtlefin",
-    "x-broker": "turtlefin"
+    "x-broker": "turtlefin",
+    "Authorization": "Bearer OlbW8Je5GPjxytL+yxhLmA=="
   }
 }

@@ -3,6 +3,7 @@ const axios = require('axios').default
 const hospicashQuoteData = require('./hospicash/quote.json')
 const hospicashProposalData = require('./hospicash/proposal.json')
 const hospicashPaymentData = require('./hospicash/payment.json')
+const hospicashHeaderData = require('./hospicash/header.json')
 
 const mobileQuoteData = require('./mobile/quote.json')
 const mobileProposalData = require('./mobile/proposal.json')
@@ -23,8 +24,11 @@ const creditlifeProposalData = require('./credit-life/proposal.json')
 const creditlifePaymentData = require('./credit-life/payment.json')
 const creditlifeHeaderData = require('./credit-life/header.json')
 
+const { APIGEE_UAT, APIGEE_PROD, APIGEE_VERSION, MINTERPRISE_LOCAL, MINTERPRISE_UAT, MINTERPRISE_PROD, MINTERPRISE_VERSION } = require('./constants.js');
+
 const vertical = process.argv[3]
 const profile = process.argv[2]
+const appName = process.argv[4]
 
 const defaultHeaderData = {
   headers: {
@@ -32,13 +36,24 @@ const defaultHeaderData = {
     'x-broker': 'turtlemint',
   },
 }
+var url
+var version
 
-const url =
-  profile === 'local'
-    ? 'http://localhost:9098'
+if (appName === undefined) {
+  url = profile === 'local'
+    ? MINTERPRISE_LOCAL
     : profile === 'prod'
-    ? 'https://app.turtlemint.com'
-    : 'https://app.skyfall.turtle-feature.com'
+    ? MINTERPRISE_PROD
+    : MINTERPRISE_UAT
+
+  version = MINTERPRISE_VERSION
+} else if (appName.toUpperCase() === 'APIGEE') {
+  url = profile === 'uat'
+    ? APIGEE_UAT
+    : APIGEE_PROD
+
+  version = APIGEE_VERSION
+}
 
 const quoteData = eval(`${vertical}QuoteData`.replace(/-/g, ''))
 const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ''))
@@ -52,10 +67,11 @@ try {
 }
 
 async function createQuote() {
-  console.log(`[${profile}] - getting ready with quote for`, vertical)
+  console.log(`[${profile}] - getting ready with quote for`, vertical, `${url}${version}/v1/products/${vertical}/quotes`)
+
   axios
     .post(
-      `${url}/api/minterprise/v1/products/${vertical}/quotes`,
+      `${url}${version}/v1/products/${vertical}/quotes`,
       quoteData,
       paymentHeader
     )
@@ -88,7 +104,7 @@ async function createQuote() {
 async function getQuote(quoteURL) {
   console.log('quoteURL = ' + quoteURL)
   axios
-    .get(`${quoteURL}`)
+    .get(`${quoteURL}`, paymentHeader)
     .then(async (response) => {
       let data = response.data.data
       console.log(
@@ -115,7 +131,7 @@ async function getQuote(quoteURL) {
 }
 async function getQuoteWithProposal(quoteURL) {
   axios
-    .get(`${quoteURL}`)
+    .get(`${quoteURL}`, { headers: { Authorization: "Bearer OlbW8Je5GPjxytL+yxhLmA==" } })
     .then(async (response) => {
       let data = response.data.data
       console.log(
@@ -143,9 +159,6 @@ async function getQuoteWithProposal(quoteURL) {
 
 async function getProposal(referenceId, premiumResultId) {
   console.log('creating proposal')
-  console.log("returnDateOfPurchase() == " + returnDateOfPurchase())
-
-
 
   proposalData.data.premiumResultId = premiumResultId
   proposalData.data.referenceId = referenceId
@@ -153,7 +166,7 @@ async function getProposal(referenceId, premiumResultId) {
 
   axios
     .post(
-      `${url}/api/minterprise/v1/products/${vertical}/proposals`,
+      `${url}${version}/v1/products/${vertical}/proposals`,
       proposalData,
       paymentHeader
     )
@@ -175,7 +188,7 @@ async function getProposal(referenceId, premiumResultId) {
                     "referenceId": "${referenceId}"
                 }
             }'`)
-
+              
       console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
       await generateLink(referenceId, data?.proposalId)
@@ -193,12 +206,14 @@ async function generateLink(referenceId, proposalId) {
 
   await axios
     .post(
-      `${url}/api/minterprise/v1/products/${vertical}/payments/link`,
+      `${url}${version}/v1/products/${vertical}/payments/link`,
       paymentData,
       paymentHeader
     )
     .then((response) => {
+      console.log("")
       console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
+      console.log("")
       console.log('Payment Link -- > ' + response.data.data.paymentLink)
       console.log("")
       console.log("")
