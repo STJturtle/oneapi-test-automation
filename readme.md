@@ -5,9 +5,9 @@
 - Ex - node index.js > result.txt local shop
 
 ### Environments
-local - only available for minterprise
-uat - available for minterprise and apigee
-prod - available for minterprise and apigee
+local - only available for minterprise <br/>
+uat - available for minterprise and apigee <br/>
+prod - available for minterprise and apigee <br/>
 
 ### ProductCodes
 
