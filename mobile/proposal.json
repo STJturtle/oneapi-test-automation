@@ -1,32 +1,32 @@
 {
   "data": {
-      "premiumResultId": "63738b9175c8162410f6081b",
-      "referenceId": "AGTMU5QC8IJ",
-      "payMode": "ONLINE",
-      "insurerCode": "HDFC",
-      "productCode": "mobile",
-      "personalDetails": {
-          "title": "Mr",
-          "firstName": "Sumit ",
-          "lastName": "Doe",
-          "email": "sumit.jadiya@turtlemint.com",
-          "mobile": "9898434784",
-          "dob": "01/01/1992"
-      },
-      "registeredAddress": {
-          "city": "pune",
-          "pincode": "110008",
-          "address1": "sdsd, sdsd",
-          "address2": ""
-      },
-      "otherDetails": {
-          "imei": "459634135760249",
-          "make": "ACER",
-          "model": "Apple",
-          "dateOfPurchase": "",
-          "mobileBillInvoiceId": "fea18e87-07cd-43e5-be8a-7c0261af3e71",
-          "isConsentProvided": true
-      },
-      "medicalQuestions": {}
+    "premiumResultId": "63738b9175c8162410f6081b",
+    "referenceId": "AGTMU5QC8IJ",
+    "payMode": "ONLINE",
+    "insurerCode": "HDFC",
+    "productCode": "mobile",
+    "personalDetails": {
+      "title": "Mr",
+      "firstName": "Sumit ",
+      "lastName": "Doe",
+      "email": "sumit.jadiya@turtlemint.com",
+      "mobile": "9898434784",
+      "dob": "01/01/1992"
+    },
+    "registeredAddress": {
+      "city": "pune",
+      "pincode": "110008",
+      "address1": "sdsd, sdsd",
+      "address2": ""
+    },
+    "otherDetails": {
+      "imei": "459634135760249",
+      "make": "ACER",
+      "model": "Apple",
+      "dateOfPurchase": "",
+      "mobileBillInvoiceId": "fea18e87-07cd-43e5-be8a-7c0261af3e71",
+      "isConsentProvided": true
+    },
+    "medicalQuestions": {}
   }
 }

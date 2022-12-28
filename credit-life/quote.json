@@ -1,16 +1,16 @@
 {
-    "data": {
-        "businessType": "NEW",
-        "productCode": "credit-life",
-        "premiumRequest": {
-            "riskInsured": {
-                "loanType": "HL",
-                "planType": "LEVEL",
-                "dob": "27/01/2000",
-                "loanTenure": 2,
-                "sumInsured": 100000,
-                "insurerCode": "KOTAK"
-            }
-        }
+  "data": {
+    "businessType": "NEW",
+    "productCode": "credit-life",
+    "premiumRequest": {
+      "riskInsured": {
+        "loanType": "HL",
+        "planType": "LEVEL",
+        "dob": "27/01/2000",
+        "loanTenure": 2,
+        "sumInsured": 100000,
+        "insurerCode": "KOTAK"
+      }
     }
+  }
 }

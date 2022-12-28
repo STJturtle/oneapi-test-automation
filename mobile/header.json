@@ -1,6 +1,15 @@
 {
-  "headers": {
-    "x-tenant": "turtlefin",
-    "x-broker": "turtlefin"
+  "general": {
+    "headers": {
+      "x-tenant": "turtlefin",
+      "x-broker": "turtlemint"
+    }
+  },
+
+  "payment": {
+    "headers": {
+      "x-tenant": "turtlefin",
+      "x-broker": "turtlefin"
+    }
   }
 }

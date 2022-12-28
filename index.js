@@ -29,7 +29,12 @@ const grouppersonalaccidentProposalData = require('./group-personal-accident/pro
 const grouppersonalaccidentPaymentData = require('./group-personal-accident/payment.json')
 const grouppersonalaccidentHeaderData = require('./group-personal-accident/header.json')
 
-const { MINTERPRISE_LOCAL, MINTERPRISE_UAT, MINTERPRISE_PROD, MINTERPRISE_VERSION } = require('./constants.js');
+const {
+  MINTERPRISE_LOCAL,
+  MINTERPRISE_UAT,
+  MINTERPRISE_PROD,
+  MINTERPRISE_VERSION,
+} = require('./constants.js')
 
 const vertical = process.argv[3]
 const profile = process.argv[2]
@@ -43,7 +48,8 @@ const defaultHeaderData = {
 var url
 var version
 
-url = profile === 'local'
+url =
+  profile === 'local'
     ? MINTERPRISE_LOCAL
     : profile === 'prod'
     ? MINTERPRISE_PROD
@@ -54,23 +60,30 @@ version = MINTERPRISE_VERSION
 const quoteData = eval(`${vertical}QuoteData`.replace(/-/g, ''))
 const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ''))
 const paymentData = eval(`${vertical}PaymentData`.replace(/-/g, ''))
+
+let generalHeader
 let paymentHeader
 
 try {
-  paymentHeader = eval(`${vertical}HeaderData`.replace(/-/g, ''))
+  generalHeader = eval(`${vertical}HeaderData`.replace(/-/g, '')).general
+  paymentHeader = eval(`${vertical}HeaderData`.replace(/-/g, '')).payment
 } catch (e) {
+  generalHeader = defaultHeaderData
   paymentHeader = defaultHeaderData
 }
 
+console.log('general Header -> ', generalHeader)
+console.log('payment Header -> ', paymentHeader)
+
 async function createQuote() {
-  console.log(`[${profile}] - getting ready with quote for`, vertical, `${url}${version}/v1/products/${vertical}/quotes`)
+  console.log(
+    `[${profile}] - getting ready with quote for`,
+    vertical,
+    `${url}${version}/v1/products/${vertical}/quotes`
+  )
 
   axios
-    .post(
-      `${url}${version}/v1/products/${vertical}/quotes`,
-      quoteData,
-      paymentHeader
-    )
+    .post(`${url}${version}/v1/products/${vertical}/quotes`, quoteData, generalHeader)
     .then(async (response) => {
       let element = response.data.data
       console.log(
@@ -100,7 +113,7 @@ async function createQuote() {
 async function getQuote(quoteURL) {
   console.log('quoteURL = ' + quoteURL)
   axios
-    .get(`${quoteURL}`, paymentHeader)
+    .get(`${quoteURL}`, generalHeader)
     .then(async (response) => {
       let data = response.data.data
       console.log(
@@ -127,7 +140,7 @@ async function getQuote(quoteURL) {
 }
 async function getQuoteWithProposal(quoteURL) {
   axios
-    .get(`${quoteURL}`, { headers: { Authorization: "Bearer OlbW8Je5GPjxytL+yxhLmA==" } })
+    .get(`${quoteURL}`, { headers: { Authorization: 'Bearer OlbW8Je5GPjxytL+yxhLmA==' } })
     .then(async (response) => {
       let data = response.data.data
       console.log(
@@ -164,7 +177,7 @@ async function getProposal(referenceId, premiumResultId) {
     .post(
       `${url}${version}/v1/products/${vertical}/proposals`,
       proposalData,
-      paymentHeader
+      generalHeader
     )
     .then(async (response) => {
       let data = response.data.data
@@ -172,9 +185,12 @@ async function getProposal(referenceId, premiumResultId) {
       // console.log(data?.insurerCode)
       console.log('[getProposal] Proposal Id -- > ' + data?.proposalId)
 
-      console.log(`curl --location --request POST '$${url}/api/minterprise/v1/products/${vertical}/payments/link' \
-            --header 'x-tenant: pharmeasy' \
-            --header 'x-broker: turtlemint' \
+      const tenant = paymentHeader.headers['x-tenant']
+      const broker = paymentHeader.headers['x-broker']
+
+      console.log(`curl --location --request POST '${url}/api/minterprise/v1/products/${vertical}/payments/link' \
+            --header 'x-tenant: ${tenant}' \
+            --header 'x-broker: ${broker}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
                 "data": {
@@ -184,7 +200,7 @@ async function getProposal(referenceId, premiumResultId) {
                     "referenceId": "${referenceId}"
                 }
             }'`)
-              
+
       console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
       await generateLink(referenceId, data?.proposalId)
@@ -207,13 +223,13 @@ async function generateLink(referenceId, proposalId) {
       paymentHeader
     )
     .then((response) => {
-      console.log("")
+      console.log('')
       console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
-      console.log("")
+      console.log('')
       console.log('Payment Link -- > ' + response.data.data.paymentLink)
-      console.log("")
-      console.log("")
-      console.log(" - - - - - - - - - - - - - - - - - - - -")
+      console.log('')
+      console.log('')
+      console.log(' - - - - - - - - - - - - - - - - - - - -')
     })
     .catch(function (error) {
       console.log('error' + error)
@@ -223,10 +239,10 @@ async function generateLink(referenceId, proposalId) {
 createQuote()
 
 function returnDateOfPurchase() {
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
+  var today = new Date()
+  var dd = String(today.getDate()).padStart(2, '0')
+  var mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+  var yyyy = today.getFullYear()
 
-  return dd + '/' + mm + '/' + yyyy;
+  return dd + '/' + mm + '/' + yyyy
 }
