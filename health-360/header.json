@@ -1,14 +1,14 @@
 {
   "general": {
     "headers": {
-      "x-tenant": "pharmeasy",
+      "x-tenant": "turtlemint",
       "x-broker": "turtlemint"
     }
   },
 
   "payment": {
     "headers": {
-      "x-tenant": "pharmeasy",
+      "x-tenant": "turtlemint",
       "x-broker": "turtlemint"
     }
   }

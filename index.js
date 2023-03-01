@@ -29,11 +29,17 @@ const grouppersonalaccidentProposalData = require('./group-personal-accident/pro
 const grouppersonalaccidentPaymentData = require('./group-personal-accident/payment.json')
 const grouppersonalaccidentHeaderData = require('./group-personal-accident/header.json')
 
+const health360QuoteData = require('./health-360/quote.json')
+const health360ProposalData = require('./health-360/proposal.json')
+const health360PaymentData = require('./health-360/payment.json')
+const health360HeaderData = require('./health-360/header.json')
+
 const {
   MINTERPRISE_LOCAL,
   MINTERPRISE_UAT,
   MINTERPRISE_PROD,
   MINTERPRISE_VERSION,
+  trxEnabled,
 } = require('./constants.js')
 
 const vertical = process.argv[3]
@@ -188,22 +194,43 @@ async function getProposal(referenceId, premiumResultId) {
       const tenant = paymentHeader.headers['x-tenant']
       const broker = paymentHeader.headers['x-broker']
 
-      console.log(`curl --location --request POST '${url}/api/minterprise/v1/products/${vertical}/payments/link' \
-            --header 'x-tenant: ${tenant}' \
-            --header 'x-broker: ${broker}' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-                "data": {
-                    "productCode": "${vertical}",
-                    "insurerCode": "${data?.insurerCode}",
-                    "proposalId": "${data?.proposalId}",
-                    "referenceId": "${referenceId}"
-                }
-            }'`)
+      if (trxEnabled.includes(vertical)) {
+        console.log(`curl --location --request POST '${url}/api/minterprise/v1/payments/${vertical}/transaction' \
+        --header 'x-tenant: ${tenant}' \
+        --header 'x-broker: ${broker}' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+            "data": {
+              "productCode": "${vertical}",
+              "insurerCode": "${data?.insurerCode}",
+              "proposalId": "${data?.proposalId}",
+              "referenceId": "${referenceId}",
+              "transactionStatus":"SUCCESS",
+              "transactionId":"Order_ABCDEF"
+            }
+        }'`)
 
-      console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
+        console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
-      await generateLink(referenceId, data?.proposalId)
+        await checkTrxApi(referenceId, data?.proposalId)
+      } else {
+        console.log(`curl --location --request POST '${url}/api/minterprise/v1/products/${vertical}/payments/link' \
+        --header 'x-tenant: ${tenant}' \
+        --header 'x-broker: ${broker}' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+            "data": {
+                "productCode": "${vertical}",
+                "insurerCode": "${data?.insurerCode}",
+                "proposalId": "${data?.proposalId}",
+                "referenceId": "${referenceId}"
+            }
+        }'`)
+
+        console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
+
+        await generateLink(referenceId, data?.proposalId)
+      }
     })
     .catch(function (error) {
       console.log(error)
@@ -227,6 +254,32 @@ async function generateLink(referenceId, proposalId) {
       console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
       console.log('')
       console.log('Payment Link -- > ' + response.data.data.paymentLink)
+      console.log('')
+      console.log('')
+      console.log(' - - - - - - - - - - - - - - - - - - - -')
+    })
+    .catch(function (error) {
+      console.log('error' + error)
+    })
+}
+
+async function checkTrxApi(referenceId, proposalId) {
+  paymentData.data.referenceId = referenceId
+  paymentData.data.proposalId = proposalId
+
+  console.log('checking from transaction api')
+
+  await axios
+    .post(
+      `${url}${version}/v1/payments/${vertical}/transaction`,
+      paymentData,
+      paymentHeader
+    )
+    .then((response) => {
+      console.log('')
+      console.log(`${url}/api/minterprise/v1/payments/${vertical}/transaction`)
+      console.log('')
+      console.log('trx response -- > ' + JSON.stringify(response.data.data, null, 4))
       console.log('')
       console.log('')
       console.log(' - - - - - - - - - - - - - - - - - - - -')

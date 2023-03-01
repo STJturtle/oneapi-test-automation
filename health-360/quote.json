@@ -1,0 +1,16 @@
+{
+  "data": {
+    "businessType": "NEW",
+    "productCode": "health-360",
+    "planCode": "2L 8001 , 500 8003, 8055, 8002",
+    "premiumRequest": {
+      "riskInsured": {
+        "dailyCashAllowance": 1000,
+        "criticalIllness": 200000,
+        "age": 32,
+        "opd": "YES",
+        "healthServices": "YES"
+      }
+    }
+  }
+}

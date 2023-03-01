@@ -7,3 +7,5 @@ exports.MINTERPRISE_LOCAL = 'http://localhost:9098'
 exports.MINTERPRISE_UAT = 'https://app.skyfall.turtle-feature.com'
 exports.MINTERPRISE_PROD = 'https://app.turtlemint.com'
 exports.MINTERPRISE_VERSION = '/api/minterprise'
+
+exports.trxEnabled = ['health-360']

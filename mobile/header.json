@@ -2,7 +2,9 @@
   "general": {
     "headers": {
       "x-tenant": "turtlefin",
-      "x-broker": "turtlemint"
+      "x-broker": "turtlemint",
+      "x-partner-id": "61cd8d268ce2146c4da13d57",
+      "authorization": "894768f168ebf7061c8f03e2ecf30e04677feb99eeae9c0355598e754deae0898a97cbd4f5bbfed4a6e19d27f459035b"
     }
   },
 

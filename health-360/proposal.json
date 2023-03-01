@@ -1,0 +1,40 @@
+{
+  "data": {
+    "premiumResultId": "63c7c53806a5655ab5876053",
+    "referenceId": "AGVMYRQTUYT",
+    "insurerCode": "CARE",
+    "productCode": "health-360",
+    "personalDetails": {
+      "title": "Mr",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "sumit.jadiya@turtlemint.com",
+      "gender": "Male",
+      "mobile": "6100000000",
+      "dob": "12/10/1992"
+    },
+    "registeredAddress": {
+      "city": "PUNE",
+      "pincode": "411045",
+      "address1": "qweqw",
+      "address2": "abc"
+    },
+    "otherDetails": {
+      "insuredDetails": {
+        "title": "Mr",
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "dob": "20/11/1993",
+        "relationship": "Wife"
+      },
+      "nomineeDetails": {
+        "title": "Mr",
+        "firstName": "Richard",
+        "lastName": "Doe",
+        "dob": "14/06/2017",
+        "relationship": "Son"
+      }
+    }
+  },
+  "meta": {}
+}
