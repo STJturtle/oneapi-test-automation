@@ -29,7 +29,18 @@ const grouppersonalaccidentProposalData = require('./group-personal-accident/pro
 const grouppersonalaccidentPaymentData = require('./group-personal-accident/payment.json')
 const grouppersonalaccidentHeaderData = require('./group-personal-accident/header.json')
 
-const { APIGEE_UAT, APIGEE_PROD, APIGEE_VERSION, APIGEE_TOKEN } = require('./constants.js');
+const health360QuoteData = require('./health-360/quote.json')
+const health360ProposalData = require('./health-360/proposal.json')
+const health360PaymentData = require('./health-360/payment.json')
+const health360HeaderData = require('./health-360/header.json')
+
+const {
+  APIGEE_UAT,
+  APIGEE_PROD,
+  APIGEE_VERSION,
+  APIGEE_TOKEN,
+  trxEnabled,
+} = require('./constants.js')
 
 const vertical = process.argv[3]
 const profile = process.argv[2]
@@ -38,15 +49,14 @@ const appName = process.argv[4]
 const defaultHeaderData = {
   headers: {
     'x-tenant': 'turtlemint',
-    'x-broker': 'turtlemint'
+    'x-broker': 'turtlemint',
+    Authorization: APIGEE_TOKEN,
   },
 }
 var url
 var version
 
-url = profile === 'uat'
-    ? APIGEE_UAT
-    : APIGEE_PROD
+url = profile === 'uat' ? APIGEE_UAT : APIGEE_PROD
 
 version = APIGEE_VERSION
 
@@ -55,23 +65,24 @@ const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ''))
 const paymentData = eval(`${vertical}PaymentData`.replace(/-/g, ''))
 let paymentHeader
 
-try {
-  paymentHeader = eval(`${vertical}HeaderData`.replace(/-/g, ''))
-} catch (e) {
-  paymentHeader = defaultHeaderData
-}
+// try {
+//   paymentHeader = eval(`${vertical}HeaderData`.replace(/-/g, ''))
+// } catch (e) {
+//   paymentHeader = defaultHeaderData
+// }
 
-paymentHeader.headers.Authorization = "Bearer " + APIGEE_TOKEN
+// console.log('paymentHeader.headers ', paymentHeader.headers)
+// paymentHeader.headers.Authorization = APIGEE_TOKEN
 
 async function createQuote() {
-  console.log(`[${profile}] - getting ready with quote for`, vertical, `${url}${version}/v1/products/${vertical}/quotes`)
+  console.log(
+    `[${profile}] - getting ready with quote for`,
+    vertical,
+    `${url}${version}/v1/products/${vertical}/quotes`
+  )
 
   axios
-    .post(
-      `${url}${version}/v1/products/${vertical}/quotes`,
-      quoteData,
-      paymentHeader
-    )
+    .post(`${url}${version}/v1/products/${vertical}/quotes`, quoteData, defaultHeaderData)
     .then(async (response) => {
       let element = response.data.data
       console.log(
@@ -93,11 +104,11 @@ async function createQuote() {
     })
 }
 
-console.log("payment request headers" , paymentHeader)
+console.log('payment request headers', defaultHeaderData)
 
 async function getQuoteWithProposal(referenceId, quoteURL) {
   axios
-    .get(`${quoteURL}`, paymentHeader)
+    .get(`${quoteURL}`, defaultHeaderData)
     .then(async (response) => {
       let data = response.data.data
       data.referenceId = referenceId
@@ -135,17 +146,21 @@ async function getProposal(referenceId, premiumResultId) {
     .post(
       `${url}${version}/v1/products/${vertical}/proposals`,
       proposalData,
-      paymentHeader
+      defaultHeaderData
     )
     .then(async (response) => {
       let data = response.data.data
 
       // console.log(data?.insurerCode)
       console.log('[getProposal] Proposal Id -- > ' + data?.proposalId)
-              
-      console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
-      await generateLink(referenceId, data?.proposalId)
+      console.log('paymentHeader = ' + JSON.stringify(defaultHeaderData))
+
+      if (trxEnabled.includes(vertical)) {
+        await checkTrxApi(referenceId, data?.proposalId)
+      } else {
+        await generateLink(referenceId, data?.proposalId)
+      }
     })
     .catch(function (error) {
       console.log(error)
@@ -162,16 +177,42 @@ async function generateLink(referenceId, proposalId) {
     .post(
       `${url}${version}/v1/products/${vertical}/payments/link`,
       paymentData,
-      paymentHeader
+      defaultHeaderData
     )
     .then((response) => {
-      console.log("")
+      console.log('')
       console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
-      console.log("")
+      console.log('')
       console.log('Payment Link -- > ' + response.data.data.paymentLink)
-      console.log("")
-      console.log("")
-      console.log(" - - - - - - - - - - - - - - - - - - - -")
+      console.log('')
+      console.log('')
+      console.log(' - - - - - - - - - - - - - - - - - - - -')
+    })
+    .catch(function (error) {
+      console.log('error' + error)
+    })
+}
+
+async function checkTrxApi(referenceId, proposalId) {
+  paymentData.data.referenceId = referenceId
+  paymentData.data.proposalId = proposalId
+
+  console.log('checking from transaction api')
+
+  await axios
+    .post(
+      `${url}${version}/v1/payments/${vertical}/transaction`,
+      paymentData,
+      defaultHeaderData
+    )
+    .then((response) => {
+      console.log('')
+      console.log(`${url}/api/minterprise/v1/payments/${vertical}/transaction`)
+      console.log('')
+      console.log('trx response -- > ' + JSON.stringify(response.data.data, null, 4))
+      console.log('')
+      console.log('')
+      console.log(' - - - - - - - - - - - - - - - - - - - -')
     })
     .catch(function (error) {
       console.log('error' + error)
@@ -181,10 +222,10 @@ async function generateLink(referenceId, proposalId) {
 createQuote()
 
 function returnDateOfPurchase() {
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
+  var today = new Date()
+  var dd = String(today.getDate()).padStart(2, '0')
+  var mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+  var yyyy = today.getFullYear()
 
-  return dd + '/' + mm + '/' + yyyy;
+  return dd + '/' + mm + '/' + yyyy
 }
