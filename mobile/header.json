@@ -4,14 +4,15 @@
       "x-tenant": "turtlefin",
       "x-broker": "turtlemint",
       "x-partner-id": "61cd8d268ce2146c4da13d57",
-      "authorization": "894768f168ebf7061c8f03e2ecf30e04677feb99eeae9c0355598e754deae0898a97cbd4f5bbfed4a6e19d27f459035b"
+      "authorization": "b1c5d58e7e43171a647473567d529d0f5a46ee542f109722e2a903cdf4a59390c9d9d69581cde44f0b351f93c8d3d9f5"
     }
   },
 
   "payment": {
     "headers": {
       "x-tenant": "turtlefin",
-      "x-broker": "turtlefin"
+      "x-broker": "turtlefin",
+      "authorization": "b1c5d58e7e43171a647473567d529d0f5a46ee542f109722e2a903cdf4a59390c9d9d69581cde44f0b351f93c8d3d9f5"
     }
   }
 }

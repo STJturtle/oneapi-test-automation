@@ -1,0 +1,14 @@
+{
+  "data": {
+    "businessType": "NEW",
+    "productCode": "wellness",
+    "premiumRequest": {
+      "riskInsured": {
+        "planType": "INDIVIDUAL",
+        "planCode": "ACTI_HEALTH_PLUS",
+        "policyTerm": 1,
+        "insurerCode": "EKINCARE"
+      }
+    }
+  }
+}

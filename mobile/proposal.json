@@ -14,10 +14,12 @@
       "dob": "01/01/1992"
     },
     "registeredAddress": {
-      "city": "pune",
-      "pincode": "110008",
-      "address1": "sdsd, sdsd",
-      "address2": ""
+      "city": "PUNE",
+      "pincode": "411045",
+      "address1": "qweqw",
+      "address2": "abc",
+      "cityId": "PUNE_MAHARASHTRA",
+      "state": "Maharashtra"
     },
     "otherDetails": {
       "imei": "459634135760249",
@@ -25,6 +27,7 @@
       "model": "Apple",
       "dateOfPurchase": "",
       "mobileBillInvoiceId": "fea18e87-07cd-43e5-be8a-7c0261af3e71",
+      "invoiceNumber": "343434",
       "isConsentProvided": true
     },
     "medicalQuestions": {}

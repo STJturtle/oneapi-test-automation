@@ -1,0 +1,17 @@
+{
+  "general": {
+    "headers": {
+      "x-tenant": "turtlefin",
+      "x-broker": "turtlemint",
+      "Authorization": "31b90270c0575c0c9fdea87956bb2bc7c64a2d38f4e1c61f7e7d74d59632535a4464ab036ed7a9cce8b591cd01d97c1e"
+    }
+  },
+
+  "payment": {
+    "headers": {
+      "x-tenant": "turtlefin",
+      "x-broker": "turtlemint",
+      "Authorization": "31b90270c0575c0c9fdea87956bb2bc7c64a2d38f4e1c61f7e7d74d59632535a4464ab036ed7a9cce8b591cd01d97c1e"
+    }
+  }
+}

@@ -1,16 +1,17 @@
 {
   "general": {
     "headers": {
-      "x-tenant": "turtlemint",
-      "x-broker": "turtlemint"
+      "x-tenant": "zplus",
+      "x-broker": "turtlemint",
+      "Authorization": "cooQzOTAw7biuf1Pt8LmTzmCgmz8"
     }
   },
 
   "payment": {
     "headers": {
-      "x-tenant": "turtlemint",
+      "x-tenant": "zplus",
       "x-broker": "turtlemint",
-      "Authorization": "Bearer OlbW8Je5GPjxytL+yxhLmA=="
+      "Authorization": "cooQzOTAw7biuf1Pt8LmTzmCgmz8"
     }
   }
 }

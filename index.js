@@ -34,6 +34,11 @@ const health360ProposalData = require('./health-360/proposal.json')
 const health360PaymentData = require('./health-360/payment.json')
 const health360HeaderData = require('./health-360/header.json')
 
+const wellnessQuoteData = require('./wellness/quote.json')
+const wellnessProposalData = require('./wellness/proposal.json')
+const wellnessPaymentData = require('./wellness/payment.json')
+const wellnessHeaderData = require('./wellness/header.json')
+
 const {
   MINTERPRISE_LOCAL,
   MINTERPRISE_UAT,
@@ -101,14 +106,18 @@ async function createQuote() {
         element.fetchQuoteLinks[0].insurerCode
       )
 
-      element.fetchQuoteLinks.forEach(async (element) => {
-        await getQuote(element.link)
+      element.fetchQuoteLinks.forEach(async (innerElement) => {
+        await getQuote(element.referenceId, element.quoteId, innerElement.insurerCode)
 
         console.log()
       })
 
       console.log(' --- quote with proposal ----')
-      await getQuoteWithProposal(element.fetchQuoteLinks[0].link)
+      await getQuoteWithProposal(
+        element.referenceId,
+        element.quoteId,
+        element.fetchQuoteLinks[0].insurerCode
+      )
       console.log()
     })
     .catch(function (error) {
@@ -116,10 +125,13 @@ async function createQuote() {
     })
 }
 
-async function getQuote(quoteURL) {
-  console.log('quoteURL = ' + quoteURL)
+async function getQuote(referenceId, quoteId, insurerCode) {
+  // console.log('quoteURL = ' + quoteURL)
   axios
-    .get(`${quoteURL}`, generalHeader)
+    .get(
+      `${url}${version}/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`,
+      generalHeader
+    )
     .then(async (response) => {
       let data = response.data.data
       console.log(
@@ -144,9 +156,12 @@ async function getQuote(quoteURL) {
       console.log(error)
     })
 }
-async function getQuoteWithProposal(quoteURL) {
+async function getQuoteWithProposal(referenceId, quoteId, insurerCode) {
   axios
-    .get(`${quoteURL}`, { headers: { Authorization: 'Bearer OlbW8Je5GPjxytL+yxhLmA==' } })
+    .get(
+      `${url}${version}/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`,
+      generalHeader
+    )
     .then(async (response) => {
       let data = response.data.data
       console.log(
@@ -212,7 +227,7 @@ async function getProposal(referenceId, premiumResultId) {
 
         console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
-        await checkTrxApi(referenceId, data?.proposalId)
+        if (profile !== 'prod') await checkTrxApi(referenceId, data?.proposalId)
       } else {
         console.log(`curl --location --request POST '${url}/api/minterprise/v1/products/${vertical}/payments/link' \
         --header 'x-tenant: ${tenant}' \

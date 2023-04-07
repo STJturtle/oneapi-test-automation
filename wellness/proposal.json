@@ -1,0 +1,56 @@
+{
+  "data": {
+    "premiumResultId": "642ab685012d1453ae78c060",
+    "referenceId": "AGXZP3Y9Z41",
+    "insurerCode": "EKINCARE",
+    "productCode": "wellness",
+    "personalDetails": {
+      "title": "Mr",
+      "firstName": "john",
+      "lastName": "doe",
+      "email": "sumit.jadiya@turtlemint.com",
+      "gender": "Male",
+      "mobile": "6100000000",
+      "dob": "12/10/1992",
+      "annualSalary": "23450"
+    },
+    "registeredAddress": {
+      "city": "PUNE",
+      "pincode": "411045",
+      "address1": "qweqw",
+      "address2": "abc"
+    },
+    "otherDetails": {
+      "nomineeDetails": {
+        "title": "Mr",
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "dob": "20/11/1993",
+        "relationship": "Wife"
+      }
+    },
+    "insuredMembers": [
+      {
+        "name": "Jane",
+        "dob": "20/11/1993",
+        "type": "Self"
+      },
+      {
+        "name": "Dane",
+        "dob": "20/11/1994",
+        "type": "Wife"
+      },
+      {
+        "name": "Hennry",
+        "dob": "20/11/2003",
+        "type": "Child1"
+      },
+      {
+        "name": "Doglas",
+        "dob": "20/11/2005",
+        "type": "Child2"
+      }
+    ]
+  },
+  "meta": {}
+}
