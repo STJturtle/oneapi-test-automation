@@ -2,14 +2,17 @@
   "general": {
     "headers": {
       "x-tenant": "turtlemint",
-      "x-broker": "turtlemint"
+      "x-broker": "turtlemint",
+      "x-partner-id": "61cd8d268ce2146c4da13d57",
+      "authorization": "2c771d262a436f6fc63f2e83a49982c04f7b880cb03fb96f8caf69b7cea876851e15180f3797a5a5954668c3ebd65376"
     }
   },
 
   "payment": {
     "headers": {
       "x-tenant": "pharmeasy",
-      "x-broker": "turtlemint"
-    }
+      "x-broker": "turtlemint",
+      "x-partner-id": "61cd8d268ce2146c4da13d57"
+        }
   }
 }

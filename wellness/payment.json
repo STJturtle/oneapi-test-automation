@@ -1,10 +1,1 @@
-{
-  "data": {
-    "productCode": "wellness",
-    "insurerCode": "EKINCARE",
-    "proposalId": "641ab9dcb48e12b917b7ccb6",
-    "referenceId": "AGXM086330H",
-    "transactionStatus": "SUCCESS",
-    "transactionId": "b7d323f9-6845-4c10-8a91-a57480a9f686"
-  }
-}
+{"data":{"insurerCode":"EKINCARE","proposalId":"65608362d1f805e21dbb65e4","referenceId":"AH5D004ZWO3","payMode":"ONLINE","planId":""}}

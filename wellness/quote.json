@@ -1,14 +1,1 @@
-{
-  "data": {
-    "businessType": "NEW",
-    "productCode": "wellness",
-    "premiumRequest": {
-      "riskInsured": {
-        "planType": "INDIVIDUAL",
-        "planCode": "ACTI_HEALTH_PLUS",
-        "policyTerm": 1,
-        "insurerCode": "EKINCARE"
-      }
-    }
-  }
-}
+{"data":{"productCode":"wellness","policyType":"BASIC","businessType":"NEW","premiumRequest":{"riskInsured":{"planType":"INDIVIDUAL","planCode":"ACTI_HEALTH","pinCode":"110008","fullName":"blabla blabla","mobile":"9898434784","insurerCode":"EKINCARE"}}}}

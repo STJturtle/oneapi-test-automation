@@ -93,6 +93,9 @@ async function createQuote() {
     `${url}${version}/v1/products/${vertical}/quotes`
   )
 
+  console.log("quoteData - " + quoteData)
+  console.log("generalHeader - " + generalHeader)
+
   axios
     .post(`${url}${version}/v1/products/${vertical}/quotes`, quoteData, generalHeader)
     .then(async (response) => {

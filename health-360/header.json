@@ -3,7 +3,7 @@
     "headers": {
       "x-tenant": "zplus",
       "x-broker": "turtlemint",
-      "Authorization": "cooQzOTAw7biuf1Pt8LmTzmCgmz8"
+      "Authorization": "4d0fe9399c1ecfd1adb0dcf49eb2babbd52de9febcdbbeea7175d910551fb4cf1d9582df9d5e7e4d7ba7ccc95ed58e45"
     }
   },
 
@@ -11,7 +11,7 @@
     "headers": {
       "x-tenant": "zplus",
       "x-broker": "turtlemint",
-      "Authorization": "cooQzOTAw7biuf1Pt8LmTzmCgmz8"
+      "Authorization": "4d0fe9399c1ecfd1adb0dcf49eb2babbd52de9febcdbbeea7175d910551fb4cf1d9582df9d5e7e4d7ba7ccc95ed58e45"
     }
   }
 }
