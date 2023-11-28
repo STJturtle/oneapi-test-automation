@@ -1,43 +1,9 @@
 const axios = require('axios').default
 
-const hospicashQuoteData = require('./hospicash/quote.json')
-const hospicashProposalData = require('./hospicash/proposal.json')
-const hospicashPaymentData = require('./hospicash/payment.json')
-const hospicashHeaderData = require('./hospicash/header.json')
 
-const mobileQuoteData = require('./mobile/quote.json')
-const mobileProposalData = require('./mobile/proposal.json')
-const mobilePaymentData = require('./mobile/payment.json')
-const mobileHeaderData = require('./mobile/header.json')
-
-const shopQuoteData = require('./shop/quote.json')
-const shopProposalData = require('./shop/proposal.json')
-const shopPaymentData = require('./shop/payment.json')
-const shopHeaderData = require('./shop/header.json')
-
-const vectorborneQuoteData = require('./vector-borne/quote.json')
-const vectorborneProposalData = require('./vector-borne/proposal.json')
-const vectorbornePaymentData = require('./vector-borne/payment.json')
-
-const creditlifeQuoteData = require('./credit-life/quote.json')
-const creditlifeProposalData = require('./credit-life/proposal.json')
-const creditlifePaymentData = require('./credit-life/payment.json')
-const creditlifeHeaderData = require('./credit-life/header.json')
-
-const grouppersonalaccidentQuoteData = require('./group-personal-accident/quote.json')
-const grouppersonalaccidentProposalData = require('./group-personal-accident/proposal.json')
-const grouppersonalaccidentPaymentData = require('./group-personal-accident/payment.json')
-const grouppersonalaccidentHeaderData = require('./group-personal-accident/header.json')
-
-const health360QuoteData = require('./health-360/quote.json')
-const health360ProposalData = require('./health-360/proposal.json')
-const health360PaymentData = require('./health-360/payment.json')
-const health360HeaderData = require('./health-360/header.json')
-
-const wellnessQuoteData = require('./wellness/quote.json')
-const wellnessProposalData = require('./wellness/proposal.json')
-const wellnessPaymentData = require('./wellness/payment.json')
+const wellnessCombinedData = require('./wellness/combined.json')
 const wellnessHeaderData = require('./wellness/header.json')
+const wellnessPaymentData = require('./wellness/payment.json')
 
 const {
   MINTERPRISE_LOCAL,
@@ -68,9 +34,8 @@ url =
 
 version = MINTERPRISE_VERSION
 
-const quoteData = eval(`${vertical}QuoteData`.replace(/-/g, ''))
-const proposalData = eval(`${vertical}ProposalData`.replace(/-/g, ''))
 const paymentData = eval(`${vertical}PaymentData`.replace(/-/g, ''))
+const combinedData = eval(`${vertical}CombinedData`.replace(/-/g, ''))
 
 let generalHeader
 let paymentHeader
@@ -83,34 +48,36 @@ try {
   paymentHeader = defaultHeaderData
 }
 
-console.log('general Header -> ', generalHeader)
-console.log('payment Header -> ', paymentHeader)
+// console.log('general Header -> ', generalHeader)
+// console.log('payment Header -> ', paymentHeader)
 
-async function createQuote() {
-  console.log(
-    `[${profile}] - getting ready with quote for`,
-    vertical,
-    `${url}${version}/v1/products/${vertical}/quotes`
-  )
+async function createQuote(fullData) {
+//   console.log(
+//     `[${profile}] - getting ready with quote for`,
+//     vertical,
+//     `${url}${version}/v1/products/${vertical}/quotes`
+//   )
 
-  console.log("quoteData - " + quoteData)
-  console.log("generalHeader - " + generalHeader)
+  const quoteData = fullData.quoteRequest;
+
+  // console.log("quoteData - " + fullData.quoteRequest)
+  // console.log("generalHeader - " + generalHeader)
 
   axios
     .post(`${url}${version}/v1/products/${vertical}/quotes`, quoteData, generalHeader)
     .then(async (response) => {
       let element = response.data.data
-      console.log(
-        '[createQuote] referenceId = ',
-        element.referenceId,
-        ' quoteId = ',
-        element.quoteId,
-        ' Insurer Code = ',
-        element.fetchQuoteLinks[0].insurerCode
-      )
+    //   console.log(
+    //     '[createQuote] referenceId = ',
+    //     element.referenceId,
+    //     ' quoteId = ',
+    //     element.quoteId,
+    //     ' Insurer Code = ',
+    //     element.fetchQuoteLinks[0].insurerCode
+    //   )
 
       element.fetchQuoteLinks.forEach(async (innerElement) => {
-        await getQuote(element.referenceId, element.quoteId, innerElement.insurerCode)
+        // await getQuote(element.referenceId, element.quoteId, innerElement.insurerCode)
 
         console.log()
       })
@@ -119,7 +86,8 @@ async function createQuote() {
       await getQuoteWithProposal(
         element.referenceId,
         element.quoteId,
-        element.fetchQuoteLinks[0].insurerCode
+        element.fetchQuoteLinks[0].insurerCode,
+        fullData
       )
       console.log()
     })
@@ -137,20 +105,20 @@ async function getQuote(referenceId, quoteId, insurerCode) {
     )
     .then(async (response) => {
       let data = response.data.data
-      console.log(
-        '[getQuote] referenceId = ',
-        data?.referenceId,
-        ' Premium Result Id = ',
-        data?.premiumResultId,
-        ' Insurer Code = ',
-        data?.premiumResults.insurerCode
-      )
-      console.log(
-        '[getQuote] total Premium = ',
-        data?.premiumResults?.totalPremium,
-        ' Net Premium = ',
-        data?.premiumResults?.netPremium
-      )
+    //   console.log(
+    //     '[getQuote] referenceId = ',
+    //     data?.referenceId,
+    //     ' Premium Result Id = ',
+    //     data?.premiumResultId,
+    //     ' Insurer Code = ',
+    //     data?.premiumResults.insurerCode
+    //   )
+    //   console.log(
+    //     '[getQuote] total Premium = ',
+    //     data?.premiumResults?.totalPremium,
+    //     ' Net Premium = ',
+    //     data?.premiumResults?.netPremium
+    //   )
 
       //    await getProposal(data?.referenceId, data?.premiumResultId);
       console.log()
@@ -159,7 +127,7 @@ async function getQuote(referenceId, quoteId, insurerCode) {
       console.log(error)
     })
 }
-async function getQuoteWithProposal(referenceId, quoteId, insurerCode) {
+async function getQuoteWithProposal(referenceId, quoteId, insurerCode, fullData) {
   axios
     .get(
       `${url}${version}/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`,
@@ -167,22 +135,22 @@ async function getQuoteWithProposal(referenceId, quoteId, insurerCode) {
     )
     .then(async (response) => {
       let data = response.data.data
-      console.log(
-        '[getQuoteWithProposal] referenceId = ',
-        data?.referenceId,
-        ' Premium Result Id = ',
-        data?.premiumResultId,
-        ' Insurer Code = ',
-        data?.premiumResults.insurerCode
-      )
-      console.log(
-        '[getQuoteWithProposal] total Premium = ',
-        data?.premiumResults?.totalPremium,
-        ' Net Premium = ',
-        data?.premiumResults?.netPremium
-      )
+    //   console.log(
+    //     '[getQuoteWithProposal] referenceId = ',
+    //     data?.referenceId,
+    //     ' Premium Result Id = ',
+    //     data?.premiumResultId,
+    //     ' Insurer Code = ',
+    //     data?.premiumResults.insurerCode
+    //   )
+    //   console.log(
+    //     '[getQuoteWithProposal] total Premium = ',
+    //     data?.premiumResults?.totalPremium,
+    //     ' Net Premium = ',
+    //     data?.premiumResults?.netPremium
+    //   )
 
-      await getProposal(data?.referenceId, data?.premiumResultId)
+      await getProposal(data?.referenceId, data?.premiumResultId, fullData)
       console.log()
     })
     .catch(function (error) {
@@ -190,12 +158,15 @@ async function getQuoteWithProposal(referenceId, quoteId, insurerCode) {
     })
 }
 
-async function getProposal(referenceId, premiumResultId) {
-  console.log('creating proposal')
+async function getProposal(referenceId, premiumResultId, fullData) {
+//   console.log('creating proposal')
+
+  proposalData = fullData.proposalRequest;
 
   proposalData.data.premiumResultId = premiumResultId
   proposalData.data.referenceId = referenceId
-  // proposalData.data.otherDetails.dateOfPurchase = returnDateOfPurchase()
+
+//   console.log("proposalData.data --> ", proposalData)
 
   axios
     .post(
@@ -207,7 +178,7 @@ async function getProposal(referenceId, premiumResultId) {
       let data = response.data.data
 
       // console.log(data?.insurerCode)
-      console.log('[getProposal] Proposal Id -- > ' + data?.proposalId)
+    //   console.log('[getProposal] Proposal Id -- > ' + data?.proposalId)
 
       const tenant = paymentHeader.headers['x-tenant']
       const broker = paymentHeader.headers['x-broker']
@@ -228,13 +199,14 @@ async function getProposal(referenceId, premiumResultId) {
             }
         }'`)
 
-        console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
+        // console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
         if (profile !== 'prod') await checkTrxApi(referenceId, data?.proposalId)
       } else {
         console.log(`curl --location --request POST '${url}/api/minterprise/v1/products/${vertical}/payments/link' \
         --header 'x-tenant: ${tenant}' \
         --header 'x-broker: ${broker}' \
+        --header 'Authorization: Bearer ${paymentHeader.headers['Authorization']}' \
         --header 'Content-Type: application/json' \
         --data-raw '{
             "data": {
@@ -245,9 +217,9 @@ async function getProposal(referenceId, premiumResultId) {
             }
         }'`)
 
-        console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
+        // console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
-        await generateLink(referenceId, data?.proposalId)
+        await generateLink(referenceId, data?.proposalId, fullData)
       }
     })
     .catch(function (error) {
@@ -255,7 +227,7 @@ async function getProposal(referenceId, premiumResultId) {
     })
 }
 
-async function generateLink(referenceId, proposalId) {
+async function generateLink(referenceId, proposalId, fullData) {
   paymentData.data.referenceId = referenceId
   paymentData.data.proposalId = proposalId
 
@@ -307,7 +279,11 @@ async function checkTrxApi(referenceId, proposalId) {
     })
 }
 
-createQuote()
+
+combinedData.forEach((data) => {
+    createQuote(data)
+})
+    
 
 function returnDateOfPurchase() {
   var today = new Date()
