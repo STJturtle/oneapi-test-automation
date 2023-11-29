@@ -23,3 +23,6 @@ node index.js > result.txt uat shop
 
 ### Test APIGEE APIs
 node apigee.js > result.txt uat shop
+
+### TO RUN MULTI.JS FILE
+node multi.js > result.txt uat wellness

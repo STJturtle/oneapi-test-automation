@@ -51,22 +51,21 @@ try {
 // console.log('general Header -> ', generalHeader)
 // console.log('payment Header -> ', paymentHeader)
 
-async function createQuote(fullData) {
+async function createQuote(fullData, index) {
 //   console.log(
 //     `[${profile}] - getting ready with quote for`,
 //     vertical,
 //     `${url}${version}/v1/products/${vertical}/quotes`
 //   )
-
+try{
   const quoteData = fullData.quoteRequest;
 
   // console.log("quoteData - " + fullData.quoteRequest)
   // console.log("generalHeader - " + generalHeader)
 
-  axios
-    .post(`${url}${version}/v1/products/${vertical}/quotes`, quoteData, generalHeader)
-    .then(async (response) => {
-      let element = response.data.data
+  const response = await axios.post(`${url}${version}/v1/products/${vertical}/quotes`, quoteData, generalHeader)
+  const data = await response.data;
+  const element = data.data
     //   console.log(
     //     '[createQuote] referenceId = ',
     //     element.referenceId,
@@ -76,24 +75,26 @@ async function createQuote(fullData) {
     //     element.fetchQuoteLinks[0].insurerCode
     //   )
 
-      element.fetchQuoteLinks.forEach(async (innerElement) => {
-        // await getQuote(element.referenceId, element.quoteId, innerElement.insurerCode)
+      // element.fetchQuoteLinks.forEach(async (innerElement) => {
+      //   // await getQuote(element.referenceId, element.quoteId, innerElement.insurerCode)
 
-        console.log()
-      })
+      //   console.log()
+      // })
 
-      console.log(' --- quote with proposal ----')
-      await getQuoteWithProposal(
-        element.referenceId,
-        element.quoteId,
-        element.fetchQuoteLinks[0].insurerCode,
-        fullData
-      )
-      console.log()
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  console.log(index + " : " + '1. --- quote with proposal ----')
+  await getQuoteWithProposal(
+    element.referenceId,
+    element.quoteId,
+    element.fetchQuoteLinks[0].insurerCode,
+    fullData,
+    index
+  )
+  console.log()
+}
+catch(error) {
+  console.log("ERROR", error)
+}
+
 }
 
 async function getQuote(referenceId, quoteId, insurerCode) {
@@ -127,14 +128,11 @@ async function getQuote(referenceId, quoteId, insurerCode) {
       console.log(error)
     })
 }
-async function getQuoteWithProposal(referenceId, quoteId, insurerCode, fullData) {
-  axios
-    .get(
-      `${url}${version}/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`,
-      generalHeader
-    )
-    .then(async (response) => {
-      let data = response.data.data
+async function getQuoteWithProposal(referenceId, quoteId, insurerCode, fullData, index) {
+  const response = await axios.get(`${url}${version}/v1/products/${vertical}/quotes/${quoteId}?insurerCode=${insurerCode}&referenceId=${referenceId}`,generalHeader)
+  const responseData = await response.data;
+  console.log(index + ": " + "2. getQuoteWithProposal", response)
+  const data = responseData.data
     //   console.log(
     //     '[getQuoteWithProposal] referenceId = ',
     //     data?.referenceId,
@@ -150,15 +148,11 @@ async function getQuoteWithProposal(referenceId, quoteId, insurerCode, fullData)
     //     data?.premiumResults?.netPremium
     //   )
 
-      await getProposal(data?.referenceId, data?.premiumResultId, fullData)
-      console.log()
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  console.log(index + ":" + "3. proposalData: ", data.referenceId,  data.premiumResultId )
+  await getProposal(data?.referenceId, data?.premiumResultId, fullData, index)
 }
 
-async function getProposal(referenceId, premiumResultId, fullData) {
+async function getProposal(referenceId, premiumResultId, fullData, index) {
 //   console.log('creating proposal')
 
   proposalData = fullData.proposalRequest;
@@ -166,25 +160,25 @@ async function getProposal(referenceId, premiumResultId, fullData) {
   proposalData.data.premiumResultId = premiumResultId
   proposalData.data.referenceId = referenceId
 
-//   console.log("proposalData.data --> ", proposalData)
+  console.log(index + ": " +"4 proposalData.data --> ", proposalData)
 
-  axios
-    .post(
+  const response = await axios.post(
       `${url}${version}/v1/products/${vertical}/proposals`,
       proposalData,
       generalHeader
-    )
-    .then(async (response) => {
-      let data = response.data.data
+    );
+  const resposneData = await response.data;
+    
+  const data = resposneData.data
 
       // console.log(data?.insurerCode)
-    //   console.log('[getProposal] Proposal Id -- > ' + data?.proposalId)
+      console.log(index + ": " +'5. [getProposal] Proposal Id -- > ' + data?.proposalId)
 
       const tenant = paymentHeader.headers['x-tenant']
       const broker = paymentHeader.headers['x-broker']
 
       if (trxEnabled.includes(vertical)) {
-        console.log(`curl --location --request POST '${url}/api/minterprise/v1/payments/${vertical}/transaction' \
+        console.log(index + ": 6.", `curl --location --request POST '${url}/api/minterprise/v1/payments/${vertical}/transaction' \
         --header 'x-tenant: ${tenant}' \
         --header 'x-broker: ${broker}' \
         --header 'Content-Type: application/json' \
@@ -201,7 +195,8 @@ async function getProposal(referenceId, premiumResultId, fullData) {
 
         // console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
-        if (profile !== 'prod') await checkTrxApi(referenceId, data?.proposalId)
+      if (profile !== 'prod') {
+          await checkTrxApi(referenceId, data?.proposalId,index)
       } else {
         console.log(`curl --location --request POST '${url}/api/minterprise/v1/products/${vertical}/payments/link' \
         --header 'x-tenant: ${tenant}' \
@@ -219,70 +214,85 @@ async function getProposal(referenceId, premiumResultId, fullData) {
 
         // console.log('paymentHeader = ' + JSON.stringify(paymentHeader))
 
-        await generateLink(referenceId, data?.proposalId, fullData)
+        await generateLink(referenceId, data?.proposalId, fullData, index)
       }
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+    
+    }
+    else {
+      await generateLink(referenceId, data?.proposalId, fullData, index)
+    }
 }
 
-async function generateLink(referenceId, proposalId, fullData) {
+async function generateLink(referenceId, proposalId, fullData, index) {
   paymentData.data.referenceId = referenceId
   paymentData.data.proposalId = proposalId
+  paymentData.data.insurerCode = "SVAAS";
+  paymentData.data.productCode = "wellness";
 
-  console.log('fetching payment link')
 
-  await axios
+
+  console.log(index + ": " + '6. fetching payment link')
+  console.log(index + ": 7. " + JSON.stringify(paymentData))
+
+  const response = await axios
     .post(
       `${url}${version}/v1/products/${vertical}/payments/link`,
       paymentData,
       paymentHeader
     )
-    .then((response) => {
+  const data = await response.data;
+    
       console.log('')
       console.log(`${url}/api/minterprise/v1/products/${vertical}/payments/link`)
       console.log('')
-      console.log('Payment Link -- > ' + response.data.data.paymentLink)
+      console.log('Payment Link -- > ' + data.data.paymentLink)
       console.log('')
       console.log('')
       console.log(' - - - - - - - - - - - - - - - - - - - -')
-    })
-    .catch(function (error) {
-      console.log('error' + error)
-    })
 }
 
-async function checkTrxApi(referenceId, proposalId) {
+async function checkTrxApi(referenceId, proposalId, index) {
   paymentData.data.referenceId = referenceId
   paymentData.data.proposalId = proposalId
 
-  console.log('checking from transaction api')
+  console.log(index + ": " +'7.checking from transaction api')
 
-  await axios
+  const response =  await axios
     .post(
       `${url}${version}/v1/payments/${vertical}/transaction`,
       paymentData,
       paymentHeader
     )
-    .then((response) => {
+    const data = await response.data;
       console.log('')
       console.log(`${url}/api/minterprise/v1/payments/${vertical}/transaction`)
       console.log('')
-      console.log('trx response -- > ' + JSON.stringify(response.data.data, null, 4))
+      console.log('trx response -- > ' + JSON.stringify(data, null, 4))
       console.log('')
       console.log('')
       console.log(' - - - - - - - - - - - - - - - - - - - -')
-    })
-    .catch(function (error) {
-      console.log('error' + error)
-    })
+    
 }
 
-
-combinedData.forEach((data) => {
-    createQuote(data)
-})
+async function test() {
+  for(let i=0; i < combinedData.length; i++) {
+    try {
+      await createQuote(combinedData[i], i)
+    }
+    catch(error) {
+      console.log('Error at createQuote' + error)
+    }
+  }
+}
+test()
+// combinedData.forEach(async (data, index) => {
+//   try {
+//     await createQuote(data, index)
+//   }
+//   catch(error) {
+//     console.log('Error at createQuote' + error)
+//   }
+// })
     
 
 function returnDateOfPurchase() {
